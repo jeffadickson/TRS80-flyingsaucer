@@ -1,3 +1,4 @@
 build/
 emulator/rust/target/
 work/
+web/out/
