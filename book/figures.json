@@ -77,6 +77,21 @@
   "GET_KEY": 10.0
  },
  "show_counts_t": 977,
+ "pass_pcts": {
+  "p50": 8295,
+  "p99": 16627,
+  "max": 11334173
+ },
+ "pass_pcts_ms": {
+  "p50": 4.68,
+  "p99": 9.37,
+  "max": 6388.76
+ },
+ "update_max_t": 765831,
+ "update_max_ms": 431.68,
+ "random_per_call_t": 1680,
+ "random_share_pct": 20.3,
+ "show_counts_share_pct": 11.8,
  "print_bcd_t_max": 321,
  "explosions": {
   "total": 131,
@@ -84,6 +99,20 @@
   "none_found": 66,
   "dome_row": 42,
   "saucer_crashes": 19
+ },
+ "escape_from_0100": {
+  "escapes": 5,
+  "score_after": "0100"
+ },
+ "escape_from_0105": {
+  "escapes": 5,
+  "score_after": "0100"
+ },
+ "shot_table": {
+  "records": 20,
+  "highest_used": 13,
+  "new_records": 2227,
+  "fields": 10200
  },
  "spawn_per_pass": "1/256",
  "super_share": "1/33"

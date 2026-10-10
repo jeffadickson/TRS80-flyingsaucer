@@ -101,6 +101,13 @@ def share(entry): return round(100 * R[entry]['incl'] / tot, 1) if entry in R el
 fig['share_pct'] = {'DELAY': share(0x4C10), 'UPDATE': share(0x4510), 'SHOW_COUNTS': share(0x4B5E),
                     'TICK_CLOCK': share(0x4B80), 'GET_KEY': share(0x4C1F)}
 fig['show_counts_t'] = R[0x4B5E]['mn']
+Lp = sorted(int(l.split()[1]) for l in open(os.path.join(RUN, 'play5.prof')) if l.startswith('L '))
+fig['pass_pcts'] = {'p50': Lp[len(Lp) // 2], 'p99': Lp[int(.99 * (len(Lp) - 1))], 'max': Lp[-1]}
+fig['pass_pcts_ms'] = {k: ms(v) for k, v in fig['pass_pcts'].items()}
+fig['update_max_t'] = R[0x4510]['mx']; fig['update_max_ms'] = ms(R[0x4510]['mx'])
+fig['random_per_call_t'] = round(R[0x4C26]['incl'] / R[0x4C26]['calls'])
+fig['random_share_pct'] = round(100 * fig['random_per_call_t'] / fig['d5']['pass_t_median'], 1)
+fig['show_counts_share_pct'] = round(100 * R[0x4B5E]['mn'] / fig['d5']['pass_t_median'], 1)
 fig['print_bcd_t_max'] = R[0x4BCE]['mx']
 
 
@@ -122,6 +129,19 @@ for i, e in enumerate(ev):
     if r in (2, 4, 6, 8) and 0x80 <= cell < 0xC0: dome += 1
 fig['explosions'] = {'total': found + none, 'saucer_found': found, 'none_found': none, 'dome_row': dome,
                      'saucer_crashes': sum(1 for e in ev if e[2] in ('4741', '4794'))}
+
+# ---- the escape penalty at a score of 0100 (OR L tests only the low byte)
+for start, key in (('00', 'escape_from_0100'), ('05', 'escape_from_0105')):
+    md = os.path.join(RUN, 'm_esc.bin'); hf = os.path.join(RUN, 'm_esc.txt')
+    fsrun('escape.txt', 2200, ['--pokeat', '125:4CF6=%s,4CF7=01' % start, '--memdump', '2199:' + md, '--hits', '470F:' + hf])
+    m = open(md, 'rb').read()
+    fig[key] = {'escapes': sum(1 for _ in open(hf)), 'score_after': '%02X%02X' % (m[0x4CF7], m[0x4CF6])}
+
+# ---- how full the shot table gets under rapid fire (LAUNCH's search has no end test)
+hf = os.path.join(RUN, 'm_mash.txt')
+fsrun('mash.txt', 10200, ['--hits', '4B47,49C1:' + hf])
+recs = [(int(l.split()[6], 16) - 0x4C9C) // 3 for l in open(hf)]
+fig['shot_table'] = {'records': 20, 'highest_used': max(recs) + 1, 'new_records': len(recs), 'fields': 10200}
 
 # ---- spawn odds (from the code: 1 in 256 a pass; 2 in 256 in the demonstration)
 fig['spawn_per_pass'] = '1/256'

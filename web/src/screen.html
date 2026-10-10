@@ -1,105 +1,9 @@
-<title>Flying Saucers: The Screen Is the World</title>
+<title>The Screen Is the World</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
-<style>
-/* Layout: one reading column (~66ch) on catalogue-grey paper; figures, the
-   screen captures and code step out to a wider measure; the moment player is
-   a panel over the page. The CRT itself stays dark in both themes. */
-:root {
-  --paper: #eceef1; --ink: #1a1e26; --muted: #556071; --rule: #c4cad3;
-  --accent: #1d55a3; --accent-ink: #ffffff; --box: #e0e4ea; --box-edge: #b8c1cd;
-  --code-bg: #e3e7ed; --code-ink: #1d2430; --code-addr: #6a7586; --code-cm: #3c6a3a; --code-lb: #1d55a3;
-  --bezel: #b9bcc1; --bezel-edge: #8f949b; --crt-bg: #06080c; --crt-fg: #e4ecff;
-  --hl: #f0b43c;
-  --f-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
-  --f-body: "Newsreader", Georgia, "Times New Roman", serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  --measure: 66ch; --wide: 62rem;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --paper: #12151a; --ink: #e2e6ec; --muted: #9aa4b2; --rule: #2b323d;
-  --accent: #86b4f2; --accent-ink: #0d1420; --box: #1a1f27; --box-edge: #313a47;
-  --code-bg: #0c0f14; --code-ink: #d6dde8; --code-addr: #6f7b8c; --code-cm: #8fc28a; --code-lb: #86b4f2;
-  --bezel: #3a3e45; --bezel-edge: #23262b; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --paper: #12151a; --ink: #e2e6ec; --muted: #9aa4b2; --rule: #2b323d;
-  --accent: #86b4f2; --accent-ink: #0d1420; --box: #1a1f27; --box-edge: #313a47;
-  --code-bg: #0c0f14; --code-ink: #d6dde8; --code-addr: #6f7b8c; --code-cm: #8fc28a; --code-lb: #86b4f2;
-  --bezel: #3a3e45; --bezel-edge: #23262b; color-scheme: dark }
-
-* { box-sizing: border-box }
-body { background: var(--paper); color: var(--ink); font: 1.125rem/1.6 var(--f-body); padding-inline: 16px; padding-block: 0 4rem }
-body.emu-open { overflow: hidden }
-main { max-width: var(--measure); margin-inline: auto; display: grid; gap: 1.1rem }
-main > .wide, main > figure { width: min(var(--wide), calc(100vw - 32px)); margin-inline: calc((min(var(--wide), calc(100vw - 32px)) - 100%) / -2) }
-h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; margin: 0 }
-h2 { font-size: 1.7rem; font-weight: 800; margin-top: 2.2rem; letter-spacing: -0.01em }
-h2 .sub { display: block; font: 600 0.78rem/1.4 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .45rem }
-p { margin: 0 }
-a { color: var(--accent) }
-code, .lbl { font-family: var(--f-mono); font-size: .86em }
-.lbl { font-weight: 600; letter-spacing: .02em }
-:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
-
-/* masthead */
-.mast { max-width: var(--wide); margin: 0 auto; padding-block: 2.2rem 1.4rem; display: grid; gap: .9rem; border-bottom: 1px solid var(--rule) }
-.series { font: 600 .8rem/1.3 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
-.series b { color: var(--accent); font-weight: 600 }
-.mast h1 { font-size: clamp(2.4rem, 7vw, 4.6rem); font-weight: 800; letter-spacing: -0.03em; max-width: 14ch }
-.mast .dek { font-size: 1.3rem; max-width: 46ch; color: var(--muted) }
-.routes { display: flex; flex-wrap: wrap; gap: .5rem; font: 600 .74rem/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase }
-.routes span { border: 1px solid var(--box-edge); padding: .4rem .55rem; color: var(--muted) }
-.routes span b { color: var(--ink) }
-
-/* the screen */
-.crt { background: var(--bezel); border: 1px solid var(--bezel-edge); padding: clamp(8px, 2.2vw, 22px); border-radius: 6px }
-.crt video, .crt img, .crt canvas { display: block; width: 100%; height: auto; background: var(--crt-bg); border-radius: 3px; image-rendering: pixelated }
-figure { margin: 0; display: grid; gap: .6rem }
-figcaption { font-size: .95rem; line-height: 1.5; color: var(--muted); max-width: var(--measure) }
-figcaption .mt { font-family: var(--f-display); font-weight: 600; color: var(--ink); margin-right: .25rem }
-.mrow { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem }
-button { font: 600 .82rem/1 var(--f-mono); letter-spacing: .02em; cursor: pointer; border-radius: 3px; padding: .62rem .8rem }
-.run { background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent) }
-.pz { background: transparent; color: var(--ink); border: 1px solid var(--box-edge) }
-.mloc { font: .78rem/1.3 var(--f-mono); color: var(--muted) }
-
-/* explainer boxes and sidebars */
-.ex { background: var(--box); border-left: 3px solid var(--accent); padding: .9rem 1.1rem; display: grid; gap: .45rem; font-size: 1rem }
-.ex h3 { font: 600 .78rem/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent) }
-.side { border: 1px solid var(--box-edge); padding: 1rem 1.1rem; display: grid; gap: .6rem; font-size: 1rem }
-.side h3 { font-size: 1.15rem; font-weight: 600 }
-
-/* code */
-figure.code pre { margin: 0; background: var(--code-bg); color: var(--code-ink); padding: .9rem 1rem; overflow-x: auto; font: .82rem/1.55 var(--f-mono); border-radius: 3px }
-.ad { color: var(--code-addr) } .by { color: var(--code-addr) } .cm { color: var(--code-cm) } .lb { color: var(--code-lb); font-weight: 600 }
-
-/* tables */
-.tw { overflow-x: auto }
-table { border-collapse: collapse; width: 100%; font-size: .95rem; font-variant-numeric: tabular-nums }
-th, td { text-align: right; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); white-space: nowrap }
-th:first-child, td:first-child { text-align: left }
-thead th { font: 600 .72rem/1.3 var(--f-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); vertical-align: bottom; white-space: normal }
-caption { caption-side: bottom; text-align: left; font-size: .9rem; color: var(--muted); padding-top: .5rem }
-
-.onscreen { font-size: 1.22rem }
-footer { max-width: var(--measure); margin: 3rem auto 0; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-size: .9rem; color: var(--muted); display: grid; gap: .6rem }
-
-/* moment player */
-#emu { position: fixed; inset: 0; z-index: 10; background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(3px); overflow-y: auto; padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px) }
-#emu .box { max-width: 52rem; margin: 0 auto; background: var(--paper); border: 1px solid var(--box-edge); padding: 1rem; display: grid; gap: .8rem; border-radius: 6px }
-#emu .top { display: flex; justify-content: space-between; align-items: center; gap: 1rem }
-#emu h2 { margin: 0; font-size: 1.3rem }
-#emu-status { font: .82rem/1.4 var(--f-mono); color: var(--muted); min-height: 2.8em }
-#emu-load { border: 2px dashed var(--box-edge); padding: 1.2rem; display: grid; gap: .7rem }
-#emu-load label { font-weight: 600 }
-#emu-load input { font: .9rem var(--f-mono); max-width: 100% }
-.pad { display: flex; flex-wrap: wrap; gap: .5rem }
-.pad button { background: var(--box); color: var(--ink); border: 1px solid var(--box-edge); min-width: 3rem }
-#emu-crt:focus-visible { outline: 3px solid var(--hl) }
-@media (max-width: 34rem) { body { font-size: 1.05rem } h2 { font-size: 1.45rem } }
-@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important } }
-</style>
+<link rel="stylesheet" href="style.css">
+{{nav:screen}}
 
 <header class="mast">
   <p class="series"><b>Assembly Demystified</b> · How the classic games really worked · Flying Saucers (Radio Shack, 1979)</p>
@@ -199,37 +103,5 @@ footer { max-width: var(--measure); margin: 3rem auto 0; padding-top: 1.2rem; bo
   <p>I made this chapter with the help of Claude, an AI model from Anthropic, working under my direction. Every number comes from the emulator, every listing rebuilds the original byte for byte, and every claim about the code can be checked in the listing. Where I'm inferring, I say so. The screen font in the captures is a reconstruction of the Model I's character generator.</p>
 </footer>
 
-<div id="emu" hidden role="dialog" aria-modal="true" aria-labelledby="emu-title">
-  <div class="box">
-    <div class="top"><h2 id="emu-title">Moment</h2><button type="button" class="pz" id="emu-close">Close</button></div>
-    <div id="emu-load" hidden>
-      <label for="emu-file">Load flysauc5.cmd</label>
-      <p>The program file published with this page could not be loaded. Choose a copy of <code>flysauc5.cmd</code> (from Ira Goldklang's TRS-80 archive); it is checked by its SHA-256 and kept in this browser only.</p>
-      <input type="file" id="emu-file" accept=".cmd,.CMD">
-      <p id="emu-load-msg" role="status"></p>
-    </div>
-    <div id="emu-screen" hidden>
-      <div class="crt"><canvas id="emu-crt" tabindex="0" aria-label="The TRS-80 screen. Click or tab here to play with the keyboard; Escape gives the keyboard back."></canvas></div>
-      <p id="emu-status" role="status"></p>
-      <div class="mrow"><button type="button" class="run" id="emu-run">Run</button><button type="button" class="pz" id="emu-step">Next field</button><button type="button" class="pz" id="emu-again">Back to the moment</button></div>
-      <div class="pad" aria-label="Keys"><button type="button" data-tap=",">, aim left</button><button type="button" data-tap=".">. aim right</button><button type="button" data-tap="Z">Z fire</button><button type="button" data-tap="1">1</button><button type="button" data-tap="5">5</button><button type="button" data-tap="9">9</button><button type="button" data-tap="R">R restart</button></div>
-    </div>
-  </div>
-</div>
-
-<script>window.MOMENTS = {{moments_json}}; window.FONT = {{font_json}};</script>
-<script>
-(function () {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.querySelectorAll('figure.moment').forEach(f => {
-    const v = f.querySelector('video'), b = f.querySelector('[data-pause]');
-    const set = playing => { b.textContent = playing ? 'Pause clip' : 'Play clip'; b.setAttribute('aria-pressed', String(!playing)); };
-    if (reduce) set(false); else { v.autoplay = true; v.play().then(() => set(true)).catch(() => set(false)); }
-    b.addEventListener('click', () => { if (v.paused) { v.play(); set(true); } else { v.pause(); set(false); } });
-  });
-})();
-</script>
-<script src="trs80.js"></script>
-<script src="saucsys.js"></script>
-<script src="flysauc5.js"></script>
-<script src="player.js"></script>
+{{pager:screen}}
+{{tail}}

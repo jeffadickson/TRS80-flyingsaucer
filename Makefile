@@ -10,6 +10,8 @@
 #   make equiv      the browser machine (JS) against the Rust one, every field, zero tolerance
 #   make measure    book/figures.json
 #   make captures   moment clips and stills in book/fig, expectations in moments/
+#   make faster     P1/P2 patched builds, checked pass for pass against the original (book/opt.json)
+#   make web        the web edition in web/out (all pages)
 #   make test       everything above that runs offline
 #   make all        exercise + test
 #
@@ -23,10 +25,10 @@ CARGO   ?= cargo
 EMU     := emulator/rust/target/release
 FSRUN   := $(EMU)/fsrun
 
-.PHONY: all test listing verify shift exercise emulator scenarios equiv measure captures clean
+.PHONY: all test listing verify shift exercise emulator scenarios equiv measure captures faster web clean
 
 all: exercise test
-test: verify scenarios equiv measure captures moments
+test: verify scenarios equiv measure captures moments faster web
 
 emulator: $(FSRUN)
 $(FSRUN): $(wildcard emulator/rust/src/*.rs emulator/rust/src/bin/*.rs) emulator/rust/Cargo.toml
@@ -65,3 +67,9 @@ moments: captures
 
 clean:
 	rm -rf build
+
+faster: verify
+	$(PYTHON) tools/opt.py
+
+web: captures faster measure
+	$(PYTHON) tools/web.py

@@ -1,0 +1,34 @@
+<div id="emu" hidden role="dialog" aria-modal="true" aria-labelledby="emu-title">
+  <div class="box">
+    <div class="top"><h2 id="emu-title">Moment</h2><button type="button" class="pz" id="emu-close">Close</button></div>
+    <div id="emu-load" hidden>
+      <label for="emu-file">Load flysauc5.cmd</label>
+      <p>The program file published with this page could not be loaded. Choose a copy of <code>flysauc5.cmd</code> (from Ira Goldklang's TRS-80 archive); it is checked by its SHA-256 and kept in this browser only.</p>
+      <input type="file" id="emu-file" accept=".cmd,.CMD">
+      <p id="emu-load-msg" role="status"></p>
+    </div>
+    <div id="emu-screen" hidden>
+      <div class="crt"><canvas id="emu-crt" tabindex="0" aria-label="The TRS-80 screen. Click or tab here to play with the keyboard; Escape gives the keyboard back."></canvas></div>
+      <p id="emu-status" role="status"></p>
+      <div class="mrow"><button type="button" class="run" id="emu-run">Run</button><button type="button" class="pz" id="emu-step">Next field</button><button type="button" class="pz" id="emu-again">Back to the moment</button></div>
+      <div class="pad" aria-label="Keys"><button type="button" data-tap=",">, aim left</button><button type="button" data-tap=".">. aim right</button><button type="button" data-tap="Z">Z fire</button><button type="button" data-tap="1">1</button><button type="button" data-tap="5">5</button><button type="button" data-tap="9">9</button><button type="button" data-tap="R">R restart</button></div>
+    </div>
+  </div>
+</div>
+
+<script>window.MOMENTS = {{moments_json}}; window.FONT = {{font_json}};</script>
+<script>
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('figure.moment').forEach(f => {
+    const v = f.querySelector('video'), b = f.querySelector('[data-pause]');
+    const set = playing => { b.textContent = playing ? 'Pause clip' : 'Play clip'; b.setAttribute('aria-pressed', String(!playing)); };
+    if (reduce) set(false); else { v.autoplay = true; v.play().then(() => set(true)).catch(() => set(false)); }
+    b.addEventListener('click', () => { if (v.paused) { v.play(); set(true); } else { v.pause(); set(false); } });
+  });
+})();
+</script>
+<script src="trs80.js"></script>
+<script src="saucsys.js"></script>
+<script src="flysauc5.js"></script>
+<script src="player.js"></script>

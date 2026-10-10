@@ -16,6 +16,7 @@
 //!   --pokeat F:A=V,..  patch memory at the start of field F (hex)
 //!   --robotlog FILE    write the robot's presses as a script (so a browser can replay them)
 //!   --moment F:LABELPC after field F, run on to PC; print pc, screen hash, RAM hash and stop
+//!   --passlog FILE     at the top of every game-loop pass: cycles, screen hash, data hash (4C4Bh-4FE6h)
 //!   --keylog FILE      every key the program read through $KBD: field cycles code
 use std::io::Write;
 use z80emu::trs80::{System, FRAME_T};
@@ -43,7 +44,7 @@ fn main() {
     let mut frames = 600u64; let mut script = String::new(); let mut dump = None; let mut every = 1u64;
     let mut trace = None; let mut profile = None; let mut hits: Vec<u16> = vec![]; let mut hitsf = None;
     let mut codewrites = None; let mut memdumps: Vec<(u64, String)> = vec![]; let mut robot: Option<(u64, u64)> = None;
-    let mut pokes = vec![]; let mut keylog = None; let mut pokeat: Vec<(u64, String)> = vec![]; let mut robotlog = None; let mut moment: Option<(u64, u16)> = None;
+    let mut pokes = vec![]; let mut keylog = None; let mut pokeat: Vec<(u64, String)> = vec![]; let mut robotlog = None; let mut passlog = None; let mut moment: Option<(u64, u16)> = None;
     let mut sys = System::new();
     let mut i = 2;
     while i < args.len() {
@@ -63,6 +64,7 @@ fn main() {
                 let s = q.next().map(|s| s.parse().unwrap()).unwrap_or(1); robot = Some((f, s)); i += 1; }
             "--poke" => { pokes.push(v()); i += 1; }
             "--pokeat" => { let x = v(); let (f, p) = x.split_once(':').unwrap(); pokeat.push((f.parse().unwrap(), p.into())); i += 1; }
+            "--passlog" => { passlog = Some(v()); i += 1; }
             "--robotlog" => { robotlog = Some(v()); i += 1; }
             "--moment" => { let x = v(); let (f, p) = x.split_once(':').unwrap(); moment = Some((f.parse().unwrap(), u16::from_str_radix(p, 16).unwrap())); i += 1; }
             "--keylog" => { keylog = Some(v()); i += 1; }
@@ -89,6 +91,7 @@ fn main() {
     let mut dumpf = dump.map(|p| std::io::BufWriter::new(std::fs::File::create(p).unwrap()));
     let mut tracef = trace.map(|p| std::io::BufWriter::new(std::fs::File::create(p).unwrap()));
     let mut hitw = hitsf.map(|p| std::io::BufWriter::new(std::fs::File::create(p).unwrap()));
+    let mut passw = passlog.map(|p| std::io::BufWriter::new(std::fs::File::create(p).unwrap()));
     let mut keyw = keylog.map(|p| std::io::BufWriter::new(std::fs::File::create(p).unwrap()));
     let prof_on = profile.is_some();
     let mut excl: std::collections::BTreeMap<u16, (u64, u64)> = Default::default(); // routine -> (exclusive, calls)
@@ -107,7 +110,8 @@ fn main() {
         let end = (f + 1) * FRAME_T;
         while sys.cpu.cycles < end {
             let pc = sys.cpu.pc;
-            if pc == MAIN_TOP { loops += 1; loop_marks.push(sys.cpu.cycles); }
+            if pc == MAIN_TOP { loops += 1; loop_marks.push(sys.cpu.cycles);
+                if let Some(w) = passw.as_mut() { writeln!(w, "{} {:016X} {:016X}", sys.cpu.cycles, fnv(&sys.m.mem[0x3C00..0x4000]), fnv(&sys.m.mem[0x4C4B..0x4FE7])).unwrap(); } }
             if !hits.is_empty() && hits.contains(&pc) {
                 if let Some(w) = hitw.as_mut() { let c = &sys.cpu;
                     writeln!(w, "{} {} {:04X} {:04X} {:04X} {:04X} {:04X} {:04X}", f, c.cycles, pc, c.af(), c.bc(), c.de(), c.hl(), c.sp).unwrap(); }

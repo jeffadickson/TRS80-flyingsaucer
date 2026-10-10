@@ -123,7 +123,7 @@
     machine = new SaucerMachine(); machine.boot(program);
     field = 0; last.fill(-1);
     setStatus('Replaying the recorded keys to field ' + m.frame + '…');
-    const target = m.frame, bp = parseInt(m.breakpoint_addr, 16);
+    const target = m.frame, bp = m.breakpoint ? parseInt(m.breakpoint_addr, 16) : -1;
     function chunk() {
       const t0 = performance.now();
       while (field <= target && performance.now() - t0 < 30) {
@@ -131,6 +131,9 @@
       }
       if (field <= target) { setStatus('Replaying the recorded keys: field ' + field + ' of ' + target); draw(); raf = requestAnimationFrame(chunk); return; }
       field = target;
+      if (!m.breakpoint) {                  // free play: straight to the title page, running
+        field = target + 1; draw(true); canvas.focus(); go(); return;
+      }
       for (let n = 0; machine.cpu.pc !== bp && n < 5e6; n++) machine.step();
       field = target + 1;
       draw(true);

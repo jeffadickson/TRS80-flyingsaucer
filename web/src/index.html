@@ -1,0 +1,30 @@
+<title>Flying Saucers: The Screen Is the World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+{{nav:index}}
+
+<section class="landing">
+  <div class="crt"><video muted loop playsinline autoplay preload="auto" poster="fig/steer.png" aria-label="A shot fired straight up bends left, then right, as the cannon turns." data-hero>
+    <source src="fig/steer.webm" type="video/webm"><source src="fig/steer.mp4" type="video/mp4"></video></div>
+  <h1>Flying Saucers: The Screen Is the World</h1>
+  <p class="tp">Assembly Demystified · How the classic games really worked<br>Game by Robert Arnstein · Book by Jeff Dickson · 2026</p>
+  <p class="jacket">In 1979, for ten dollars, Radio Shack sold a 4K game whose shots you could steer after they left the cannon. Here is how 3,345 bytes did it.</p>
+  <div class="cta"><a class="go" href="intro.html">Start reading</a><button type="button" class="play" data-moment="play">Play the game</button></div>
+  <ol class="toc">
+    <li><a href="intro.html">Ten Dollars of Saucers</a><span>Prologue and Introduction: the tape, its price then and now, how many were sold</span></li>
+    <li><a href="people.html">Robert Arnstein of Dallas</a><span>The people: from 8080 Chess to Radio Shack</span></li>
+    <li><a href="screen.html">The Screen Is the World</a><span>How the game moves, steers and collides</span></li>
+    <li><a href="faster.html">Half the Time, Waiting</a><span>Could it have run faster? What was possible in 1979</span></li>
+    <li><a href="secrets.html">Hidden in the Code</a><span>Secrets: bugs, leftovers and a penalty no one paid</span></li>
+  </ol>
+  <p class="also">Also in Assembly Demystified: Super Nova · Defense Command · Galaxy Invasion Plus · Weerd · Miner 2049er · Frogger · Mad Mines · Dancing Demon</p>
+</section>
+<script>
+(function () {
+  const v = document.querySelector('[data-hero]');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; }
+})();
+</script>
+{{tail}}

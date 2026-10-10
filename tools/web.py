@@ -106,22 +106,59 @@ for d in (1, 5, 9):
         d, fig(k + '.pace'), num(k + '.saucer_step_ms', '{:.0f} ms'), num(k + '.small_cells_per_s', '{:.1f}'),
         num(k + '.big_cells_per_s', '{:.1f}'), num(k + '.shot_cells_per_s', '{:.1f}'), num(k + '.time_unit_s', '{:.2f} s')))
 
-T = open(os.path.join(ROOT, 'web', 'src', 'chapter.html')).read()
 
-def sub(m):
-    key = m.group(1)
-    if key.startswith('fig:'):
-        p, _, f = key[4:].partition('|')
-        return num(p, '{}' if f == 's' else ('{:' + f + '}' if f else '{:,}'))
-    if key.startswith('clip:'): return clip(key[5:])
-    if key.startswith('code:'):
-        lo, hi, *note = key[5:].split(':', 2)
-        return excerpt(int(lo, 16), int(hi, 16), note[0] if note else '')
-    return {'speed_rows': speed_rows, 'trace_rows': trace_rows, 'trace_n': str(trace_n), 'built': built, 'commit': commit,
-            'moments_json': json.dumps({k: dict(title=v['title'], frame=v['frame'], breakpoint=v['breakpoint'],
-                                                breakpoint_addr=v['breakpoint_addr'], events=events(v)) for k, v in MOM.items()},
-                                       separators=(',', ':')),
-            'font_json': open(os.path.join(ROOT, 'web', 'font.json')).read().strip()}[key]
+H = json.load(open(os.path.join(BOOK, 'history.json')))
+O = json.load(open(os.path.join(BOOK, 'opt.json')))
+PAGES = [('index', 'Flying Saucers', None), ('intro', 'Introduction', 'Ten Dollars of Saucers'),
+         ('people', 'The People', 'Robert Arnstein of Dallas'), ('screen', 'The Screen Is the World', 'The Screen Is the World'),
+         ('faster', 'Could It Have Run Faster?', 'Half the Time, Waiting'), ('secrets', 'Secrets in the Code', 'Hidden in the Code')]
+
+
+def dig(d, path):
+    for k in path.split('.'): d = d[k]
+    return d
+
+
+def fmt(v, f):
+    if f == 's' or not f: return '{:,}'.format(v) if isinstance(v, int) and not f else str(v)
+    return ('{:' + f + '}').format(v)
+
+
+def calc(name):
+    c25 = H['price_usd'] * H['cpi']['2025'] / H['cpi']['1979']
+    if name == 'p2025': return '%.2f' % c25
+    if name == 'p2027': return '%.2f' % (c25 * (1 + H['cpi']['projection']['2026'] / 100) * (1 + H['cpi']['projection']['2027'] / 100))
+    if name == 'passes_total':
+        n = 0
+        for f in os.listdir(RUN):
+            if f.endswith('.prof') and not f.startswith('m_'):
+                n += int(open(os.path.join(RUN, f)).readline().split()[2])
+        return '{:,}'.format(n)
+    if name.startswith('t90_'): return '%.0f' % (90 * F[name[4:]]['time_unit_s'])
+    raise KeyError(name)
+
+
+def nav(cur):
+    items = []
+    for pid, label, _ in PAGES:
+        href = 'index.html' if pid == 'index' else pid + '.html'
+        cls = ' class="home"' if pid == 'index' else ''
+        aria = ' aria-current="page"' if pid == cur else ''
+        items.append('<a href="%s"%s%s>%s</a>' % (href, cls, aria, label))
+    return '<div class="bookbar"><nav aria-label="Contents">%s</nav></div>' % ''.join(items)
+
+
+def pager(cur):
+    ids = [p[0] for p in PAGES]
+    i = ids.index(cur)
+    prev = PAGES[i - 1] if i > 0 else None
+    nxt = PAGES[i + 1] if i + 1 < len(PAGES) else None
+    a = ('<a href="%s.html">← %s</a>' % (prev[0], prev[1])) if prev else '<span></span>'
+    b = ('<a href="%s.html">%s →</a>' % (nxt[0], nxt[1])) if nxt else '<span></span>'
+    return '<nav class="pager" aria-label="Pages">%s%s</nav>' % (a.replace('index.html', 'index.html'), b)
+
+
+TAIL = open(os.path.join(ROOT, 'web', 'src', 'tail.html')).read()
 
 
 def events(m):
@@ -137,9 +174,53 @@ def events(m):
             ev += [[f, 1, t[2]], [f + dur, 0, t[2]]]
     return ev
 
-page = re.sub(r'\{\{([^}]+)\}\}', sub, T)
+
+def sub(m):
+    key = m.group(1)
+    kind, _, rest = key.partition(':')
+    path, _, f = rest.partition('|')
+    if kind == 'fig': return fmt(dig(F, path), f)
+    if kind == 'hist': return fmt(dig(H, path), f)
+    if kind == 'opt': return fmt(dig(O, path), f)
+    if kind == 'calc': return calc(rest)
+    if kind == 'nav': return nav(rest)
+    if kind == 'pager': return pager(rest)
+    if kind == 'clip': return clip(rest)
+    if kind == 'code':
+        lo, hi, *note = rest.split(':', 2)
+        return excerpt(int(lo, 16), int(hi, 16), note[0] if note else '')
+    if key == 'tail': return re.sub(r'\{\{([^}]+)\}\}', sub, TAIL)
+    moments = {k: dict(title=v['title'], frame=v['frame'], breakpoint=v['breakpoint'],
+                       breakpoint_addr=v['breakpoint_addr'], events=events(v)) for k, v in MOM.items()}
+    moments['play'] = dict(title='Flying Saucers', frame=0, breakpoint=None, breakpoint_addr=None, events=[])
+    return {'speed_rows': speed_rows, 'trace_rows': trace_rows, 'trace_n': str(trace_n), 'built': built, 'commit': commit,
+            'moments_json': json.dumps(moments, separators=(',', ':')),
+            'font_json': open(os.path.join(ROOT, 'web', 'font.json')).read().strip()}[key]
+
+SKEL = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+%s
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%%}[hidden]{display:none!important}</style>
+</head>
+<body>
+%s
+</body>
+</html>
+"""
 shutil.rmtree(OUT, ignore_errors=True); os.makedirs(os.path.join(OUT, 'fig'))
-open(os.path.join(OUT, 'index.html'), 'w').write(page)
+for pid, _, _ in PAGES:
+    page = re.sub(r'\{\{([^}]+)\}\}', sub, open(os.path.join(ROOT, 'web', 'src', pid + '.html')).read())
+    left = re.findall(r'\{\{[^}]*\}\}', page)
+    assert not left, (pid, left)
+    if pid != 'index':        # pages after the first are served without the artifact's own skeleton
+        head = '\n'.join(l for l in page.splitlines() if l.startswith(('<title', '<link')))
+        body = '\n'.join(l for l in page.splitlines() if not l.startswith(('<title', '<link')))
+        page = SKEL % (head, body)
+    open(os.path.join(OUT, pid + '.html'), 'w').write(page)
+shutil.copy(os.path.join(ROOT, 'web', 'src', 'style.css'), os.path.join(OUT, 'style.css'))
 for f in os.listdir(FIG): shutil.copy(os.path.join(FIG, f), os.path.join(OUT, 'fig', f))
 for f in ('trs80.js', 'saucsys.js'): shutil.copy(os.path.join(ROOT, 'emulator', 'js', f), os.path.join(OUT, f))
 shutil.copy(os.path.join(ROOT, 'web', 'src', 'player.js'), os.path.join(OUT, 'player.js'))

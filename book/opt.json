@@ -1,0 +1,41 @@
+{
+ "port_cases": 10000,
+ "port_identical": 10000,
+ "random_saving_t": 101,
+ "random": {
+  "passes_compared": 16897,
+  "identical_passes": 16897,
+  "first_difference": null,
+  "pass_t_median_orig": 12703,
+  "pass_t_median": 12501,
+  "saving_t": 202,
+  "saving_pct": 1.6,
+  "game_t_orig": 209247938,
+  "game_t": 205738188,
+  "bytes_changed": 19
+ },
+ "counts": {
+  "passes_compared": 16897,
+  "identical_passes": 16897,
+  "first_difference": null,
+  "pass_t_median_orig": 12703,
+  "pass_t_median": 11915,
+  "saving_t": 788,
+  "saving_pct": 6.2,
+  "game_t_orig": 209247938,
+  "game_t": 196207331,
+  "bytes_changed": 49
+ },
+ "both": {
+  "passes_compared": 16897,
+  "identical_passes": 16897,
+  "first_difference": null,
+  "pass_t_median_orig": 12703,
+  "pass_t_median": 11713,
+  "saving_t": 990,
+  "saving_pct": 7.8,
+  "game_t_orig": 209247938,
+  "game_t": 192697581,
+  "bytes_changed": 68
+ }
+}

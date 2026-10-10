@@ -1,0 +1,73 @@
+<title>Flying Saucers Introduction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+{{nav:intro}}
+
+<header class="mast">
+  <p class="series"><b>Assembly Demystified</b> · Flying Saucers (Radio Shack, 1979)</p>
+  <h1>Ten Dollars of Saucers</h1>
+  <p class="dek">Prologue and Introduction: the tape, what it cost, how many people may have played it, and what this book is about.</p>
+</header>
+
+<main>
+<h2 id="prologue">Prologue<span class="sub">The tape</span></h2>
+
+<div class="recollect">
+  <p class="tag">Author recollection, 10 October 2026</p>
+  <p>I still have this tape. It is a Radio Shack cassette in its Radio Shack box, catalog number 26-1905, and the program on it is the one taken apart in this book, byte for byte.</p>
+</div>
+
+<p>Here is what buying it meant. Radio Shack announced Flying Saucers in its <i>TRS-80 Microcomputer News</i> in June 1979 at <b>${{hist:price_usd|.2f}}</b>, and that is what it cost in every TRS-80 catalog that listed it, from RSC-3 in 1979 to RSC-11 in 1984. In today's money that is about <b>${{calc:p2025}}</b> in 2025 dollars, by the consumer price index, and about <b>${{calc:p2027}}</b> in 2027 dollars if inflation runs as the Congressional Budget Office projected in January 2026 (2.8% in 2026, 2.4% in 2027). The 2027 figure is a projection, not a measurement. Next to it in the catalog, Invasion Force cost ${{hist:siblings.Invasion Force 26-1906|.2f}} and Micro Chess ${{hist:siblings.Micro Chess 26-1901|.2f}}; ten dollars was the low end of what Radio Shack charged for a game.</p>
+
+<p>You bought it over the counter at a Radio Shack, took it home, and loaded it. The manual tells you how. On a Level I machine you typed <code>CLOAD</code>. On Level II you answered <code>MEMORY SIZE?</code> with ENTER, typed <code>SYSTEM</code>, gave the file name at the <code>*?</code> prompt, and then <code>/</code> to start it. The manual warns that, because this is machine language, the asterisks in the corner flash much slower than usual while it loads. The program is {{fig:game_bytes}} bytes; at the 500 bits per second of the Level II cassette routines, that is roughly a minute of tape (computed from the size, not measured, and not counting the leader).</p>
+
+<p>Then the screen: a bar across the top with <span class="lbl">RADIO SHACK -- FLYING SAUCERS</span> in it, walls down both sides, and the instructions, which tell you to pick a difficulty from 1 (hard) to 9 (easy).</p>
+
+<h2 id="intro">Introduction<span class="sub">What makes it special</span></h2>
+<p>Flying Saucers keeps its world on the screen. Its 3,345 bytes hold a position for every saucer and every shot, but whether two things meet is never worked out from those positions: a shot looks at the character already in video RAM where it is going, and if anything is there, it has hit something. A saucer does the same. And a shot has no direction of its own; every time it moves it goes the way the cannon points at that instant. That is how the game lets you steer a shot after it has left the cannon, which the box sold as a feature.</p>
+
+{{clip:steer}}
+
+<p>The machine it was written for is small even by 1979 standards: a TRS-80 Model I with 4K of RAM, of which the first 746 bytes are the Level II ROM's work area. The game fills the rest, to within the last few bytes; its stack is the 18 bytes at the top. It calls the ROM once, to read the keyboard, and never turns interrupts on. Everything else, it does by writing characters into the 1,024 bytes of video memory and reading them back.</p>
+
+<h3 class="lbl">How it was received</h3>
+<p>Radio Shack's own newsletter called it, in August 1979, "one of the fastest-paced machine language games we've seen yet!" The one independent review I have found is shorter on praise: Glenn Mai, in <i>The Space Gamer</i> No. 39 (May 1981), rated it "OK" and pointed readers to Air Raid, a different game on the same theme at the same price. Radio Shack kept it in the catalog, at the same price, until 1984.</p>
+
+<aside class="est" aria-label="Estimate: copies sold">
+  <h3>Estimate · copies sold</h3>
+  <p>No source I have found gives a sales figure for Flying Saucers, or for any early Radio Shack game. This is my estimate, and it is only that.</p>
+  <p>The machines it could run on: Datapro counted more than 150,000 TRS-80 systems installed by the end of 1979; the Model I was discontinued at the end of 1980, and <i>80 Micro</i> estimated in 1984 that about 250,000 were still in use. The game also ran on the Model III (the 1981 manual covers it), and it stayed in the catalog through 1984 at its original price.</p>
+  <p>If between one owner in twenty and one in seven bought it, which is a guess for a cheap tape sold in every store that sold the computer, that is roughly <b>10,000 to 35,000 copies</b>. Treat the range as an order of magnitude: tens of thousands, not hundreds of thousands, and more than a few thousand.</p>
+</aside>
+
+<h3 class="lbl">Why it matters</h3>
+<p>I think this was a game that showed people what the machine could do. It came out in June 1979, among the first machine-language action games Radio Shack sold for the TRS-80, at a price anyone who had bought the computer could pay, in every Radio Shack. A year later the machine had a whole industry of fast arcade games, Big Five's among them. I have found no source that says any of those programmers learned from Flying Saucers, so this is my view and not a fact: games like this one set the bar that the next ones were written to clear. Taking it apart shows how much a small program can do with one good idea.</p>
+
+<aside class="ex" aria-label="How this book was made">
+  <h3>How this book was made</h3>
+  <p>I made this book with the help of Claude, an AI model from Anthropic, working under my direction. Every number comes from the emulator, every listing rebuilds the original byte for byte, and every historical claim cites a source you can open. Where I'm inferring, I say so.</p>
+</aside>
+
+<aside class="side" aria-label="Reading routes">
+  <h3>Three ways to read this book</h3>
+  <p><b>If you played it:</b> this Introduction, The People, the first pages of The Screen Is the World, and Secrets in the Code.</p>
+  <p><b>If you programmed the Z80 then:</b> everything, especially The Screen Is the World and Could It Have Run Faster?</p>
+  <p><b>If you program now:</b> The Screen Is the World, sections 4 to 6, and Secrets in the Code.</p>
+</aside>
+
+<h3 class="lbl">Sources</h3>
+<ol class="sources">
+  <li><i>TRS-80 Microcomputer News</i>, June 1979 (announcement, $9.95) and August/September 1979 (the "fastest-paced" line), Radio Shack. <a href="https://archive.org/details/Microcomputer_Newsletter_1979-06_Radio_Shack_US">archive.org</a></li>
+  <li>Radio Shack TRS-80 Computer Catalog RSC-3, © 1979, p. 13; RSC-11, 1984, p. 28. <a href="https://archive.org/details/1979-trs-80-radio-shack-catalog">archive.org</a></li>
+  <li><i>Flying Saucers</i> manual, © 1979, 1981 Tandy Corporation (loading instructions). <a href="https://archive.org/details/Flying_Saucers_1981_Tandy">archive.org</a></li>
+  <li>Glenn Mai, Capsule Reviews, <i>The Space Gamer</i> No. 39, May 1981, p. 35. <a href="https://archive.org/details/Space_Gamer_39">archive.org</a></li>
+  <li>Consumer Price Index (CPI-U, annual averages): 1979 = {{hist:cpi.1979}}, 2025 = {{hist:cpi.2025}} (BLS; 2025 averages 11 months). <a href="https://www.minneapolisfed.org/about-us/monetary-policy/inflation-calculator/consumer-price-index-1913-">Federal Reserve Bank of Minneapolis</a></li>
+  <li>Congressional Budget Office, <i>CBO's Current View of the Economy From 2026 to 2028</i>, 8 January 2026. <a href="https://www.cbo.gov/publication/62005">cbo.gov</a></li>
+  <li>Datapro Research, <i>All About Personal Computers</i>, June 1980 (installed base). <a href="http://www.bitsavers.org/magazines/Datapro/">bitsavers</a></li>
+  <li>Matthew Reed, "Why was the Model I discontinued?" and "TRS-80 Model I". <a href="https://www.trs-80.org/why-was-the-model-i-discontinued.html">trs-80.org</a></li>
+</ol>
+</main>
+{{pager:intro}}
+{{tail}}

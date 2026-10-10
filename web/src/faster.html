@@ -1,0 +1,89 @@
+<title>Flying Saucers Spare Time</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+{{nav:faster}}
+
+<header class="mast">
+  <p class="series"><b>Assembly Demystified</b> · Flying Saucers (Radio Shack, 1979)</p>
+  <h1>Half the Time, Waiting</h1>
+  <p class="dek">Could it have run faster? What was possible in 1979, measured.</p>
+</header>
+
+<main>
+<h2 id="right">What Arnstein got right<span class="sub">Under the constraints</span></h2>
+<p>Flying Saucers had to fit a 4K Model I, load from a cassette, run under Level I or Level II, and play smoothly. It does all of that. The whole game, its pictures and its text fit in {{fig:game_bytes}} bytes with the stack in the last {{fig:stack_bytes}}. Shots and fragments share one movement routine. Collisions cost a read of video memory. And its pace is counted in passes, each padded by the same fixed delay, so it plays at the same speed on every stock Model I. The one place it visibly stops is on purpose: each hit holds the game still for the explosion ({{fig:d5.boom_ms|.0f}}&nbsp;ms), and the super saucer's three flashes hold it for {{fig:update_max_ms|.0f}}&nbsp;ms.</p>
+
+<h2 id="profile">Where the time goes<span class="sub">One pass, measured</span></h2>
+<p>A typical pass at difficulty 5 takes {{fig:pass_pcts.p50}} T-states ({{fig:pass_pcts_ms.p50|.1f}}&nbsp;ms); 99 passes in 100 take less than {{fig:pass_pcts_ms.p99|.1f}}&nbsp;ms. Of the typical pass:</p>
+<div class="tw"><table>
+  <caption>Difficulty 5, the robot's game. Per pass, from the emulator's profile. The keyboard routine is the emulator's stand-in for the ROM's, so its share is an estimate.</caption>
+  <thead><tr><th scope="col">Routine</th><th scope="col">T-states a pass</th><th scope="col">Share of a typical pass</th></tr></thead>
+  <tbody>
+    <tr><td>DELAY, the deliberate wait</td><td>{{fig:delay_t}}</td><td>{{fig:d5.delay_share_pct|.1f}}%</td></tr>
+    <tr><td>RANDOM, called to decide whether a saucer appears</td><td>{{fig:random_per_call_t}}</td><td>{{fig:random_share_pct|.1f}}%</td></tr>
+    <tr><td>SHOW_COUNTS, reprinting score, hits and shots</td><td>{{fig:show_counts_t}}</td><td>{{fig:show_counts_share_pct|.1f}}%</td></tr>
+  </tbody>
+</table></div>
+<p>More than half of every pass is the wait. Of the rest, the two biggest costs do almost nothing a player sees. <code>RANDOM</code> runs its 23-step shift register on every pass to give a new saucer a 1-in-256 chance. <code>SHOW_COUNTS</code> prints all ten digits of the score, hits and shots on every pass, whether they changed or not.</p>
+
+<h2 id="p1">P1 · The same random numbers, sooner<span class="sub">Period-feasible</span></h2>
+<p><code>RANDOM</code> shifts its 16 bits through the accumulator: <code>LD A,H / RRA / LD H,A</code>, then the same for L. The Z80 can rotate the registers themselves, and <code>DJNZ</code> counts down in one instruction. The rewritten loop gives exactly the same numbers: I ran {{opt:port_cases}} random seeds through both on the emulator and {{opt:port_identical}} matched in every register and in the stored seed. It saves {{opt:random_saving_t}} T-states a call and four bytes.</p>
+<figure class="code"><pre><code><span class="lb">RANDOM_STEP:</span>
+        ld a,l          <span class="cm">; the same feedback test as before</span>
+        and 06h
+        scf
+        jp pe,RANDOM_SHIFT
+        ccf
+<span class="lb">RANDOM_SHIFT:</span>
+        rr h            <span class="cm">; shift the 16 bits right, carry into bit 15</span>
+        rr l
+        res 0,l         <span class="cm">; bit 0 dropped, as before</span>
+        djnz RANDOM_STEP</code></pre><figcaption>P1: the loop of RANDOM, rewritten. The four bytes saved are left as padding so nothing else moves.</figcaption></figure>
+<p>The saving is small, because what makes <code>RANDOM</code> slow is the 23 steps, and fewer steps would give different numbers. A different generator, or reading the Z80's refresh register with <code>LD A,R</code> to decide on a new saucer, would be far cheaper, but it would also make a different game, so I have not built it.</p>
+
+<h2 id="p2">P2 · Print the counts only when they change<span class="sub">Period-feasible</span></h2>
+<p>The score, hits and shots change only when something is hit, escapes or is fired. P2 keeps the last low byte of each in three bytes that the original never uses, compares, and calls <code>SHOW_COUNTS</code> only when one differs or the screen has just been cleared. Every change to one of the counts changes at least one of those three bytes, so nothing is ever left unprinted. The room comes from the code the original can never run: the always-false top-row test in front of the dead −20 branch, and the branch itself (see Secrets in the Code).</p>
+<figure class="code"><pre><code><span class="lb">SHOW_IF:</span>
+        ld a,(VIDEO+957)  <span class="cm">; the score's last digit: blank after a clear screen?</span>
+        cp 20h
+        jp z,SHOW_COUNTS
+        ld hl,SPARE       <span class="cm">; the low bytes last shown</span>
+        ld a,(SCORE)
+        ld c,(hl)
+        ld (hl),a
+        xor c
+        ld b,a
+        inc hl
+        ld a,(HIT_COUNT)
+        ld c,(hl)
+        ld (hl),a
+        xor c
+        or b
+        ld b,a
+        inc hl
+        ld a,(SHOT_COUNT)
+        ld c,(hl)
+        ld (hl),a
+        xor c
+        or b
+        ret z             <span class="cm">; nothing changed: nothing to print</span>
+        jp SHOW_COUNTS</code></pre><figcaption>P2: called from the main loop instead of SHOW_COUNTS. 40 bytes, in the 48 the dead code occupied.</figcaption></figure>
+
+<h2 id="result">What it would have bought<span class="sub">Measured</span></h2>
+<p>I built each change from patched source, assembled it, and ran the demonstration, which plays itself, against the original. Over {{opt:both.passes_compared}} passes the screen and the game's data were identical at the start of every pass, for each variant: these change nothing but time.</p>
+<div class="tw"><table>
+  <caption>The demonstration (difficulty 4, saucers twice as often), {{opt:both.passes_compared}} passes. Median pass in T-states.</caption>
+  <thead><tr><th scope="col">Build</th><th scope="col">Median pass</th><th scope="col">Saved</th><th scope="col">Bytes changed</th></tr></thead>
+  <tbody>
+    <tr><td>Original</td><td>{{opt:random.pass_t_median_orig}}</td><td>–</td><td>–</td></tr>
+    <tr><td>P1, RANDOM</td><td>{{opt:random.pass_t_median}}</td><td>{{opt:random.saving_pct|.1f}}%</td><td>{{opt:random.bytes_changed}}</td></tr>
+    <tr><td>P2, counts on change</td><td>{{opt:counts.pass_t_median}}</td><td>{{opt:counts.saving_pct|.1f}}%</td><td>{{opt:counts.bytes_changed}}</td></tr>
+    <tr><td>Both</td><td>{{opt:both.pass_t_median}}</td><td>{{opt:both.saving_pct|.1f}}%</td><td>{{opt:both.bytes_changed}}</td></tr>
+  </tbody>
+</table></div>
+<p>Visible effect: none, unless it is spent. The game's speeds are counted in passes, so a shorter pass would simply make the whole game run that much faster; to play as before, <code>DELAY</code> would wait that much longer. The saving is headroom: room for more saucers on the screen, or for drawing them in finer steps, without the game slowing down. The game was not short of time. It was short of memory, and both changes fit in the original's own bytes only because it had unreachable code to give up.</p>
+</main>
+{{pager:faster}}
+{{tail}}

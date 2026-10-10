@@ -1,0 +1,26 @@
+{
+ "_note": "Sourced facts for the history pages. Every entry carries its source; computed values say how they were computed.",
+ "price_usd": 9.95,
+ "price_sources": [
+  {"pub": "TRS-80 Microcomputer News, Vol. 1 No. 4", "date": "June 1979", "note": "first announcement, $9.95, Level I or Level II 4K", "url": "https://archive.org/details/Microcomputer_Newsletter_1979-06_Radio_Shack_US"},
+  {"pub": "Radio Shack TRS-80 Computer Catalog RSC-3", "date": "1979", "page": "13", "note": "Flying Saucer, 26-1905, $9.95", "url": "https://archive.org/details/1979-trs-80-radio-shack-catalog"},
+  {"pub": "Radio Shack TRS-80 Computer Catalog RSC-11", "date": "1984", "page": "28", "note": "last catalog listing, 26-1905, 9.95", "url": "https://archive.org/details/RSC-11_Computer_Catalog_1984_Radio_Shack"}
+ ],
+ "catalog_years": "1979-1984 (RSC-3 to RSC-11), always $9.95; not in RSC-12 (1985)",
+ "siblings": {"Invasion Force 26-1906": 14.95, "Checkers 80 26-1907": 9.95, "Micro Chess 26-1901": 19.95},
+ "cpi": {"1979": 72.6, "2025": 321.943, "source": "BLS CPI-U annual averages (Minneapolis Fed table; BLS mid-Atlantic historical table for 2025, an 11-month average because October 2025 was not collected)",
+         "url_1979": "https://www.minneapolisfed.org/about-us/monetary-policy/inflation-calculator/consumer-price-index-1913-",
+         "projection": {"2026": 2.8, "2027": 2.4, "source": "CBO, CBO's Current View of the Economy From 2026 to 2028, Jan 8 2026 (CPI-U, Q4 to Q4)", "url": "https://www.cbo.gov/publication/62005"}},
+ "review": {"pub": "The Space Gamer No. 39", "date": "May 1981", "page": "35", "author": "Glenn Mai", "url": "https://archive.org/details/Space_Gamer_39"},
+ "newsletter_praise": {"pub": "TRS-80 Microcomputer News", "date": "August/September 1979", "url": "https://archive.org/details/Microcomputer_Newsletter_1979-08_Radio_Shack_US"},
+ "installed_base": {"value": "over 150,000 TRS-80 systems installed by the end of 1979", "pub": "Datapro, All About Personal Computers", "date": "June 1980", "url": "http://www.bitsavers.org/magazines/Datapro/"},
+ "model_i_discontinued": {"value": "late 1980 (FCC rules)", "url": "https://www.trs-80.org/why-was-the-model-i-discontinued.html"},
+ "author": {
+  "chess": {"pub": "Processor Technology 8080 CHESS User's Manual", "note": "designed and written for Processor Technology by Robert Arnstein of Dallas, Texas", "url": "https://vintagecomputer.ca/files/Processor%20Technology/Cassette%20Software/8080%20Chess/chess.pdf"},
+  "acm1977": {"note": "8080 CHESS at the 8th North American Computer Chess Championship (ACM), Seattle, 15-17 October 1977; lost to BRUTE FORCE in round 4", "url": "https://www.lkessler.com/brutefor.shtml"},
+  "raakatu": {"note": "Raaka-Tu credited to Robert Arnstein", "url": "https://lcurtisboyle.com/nitros9/raakatu.html"},
+  "dog": {"note": "Device Oriented Games, Inc., Dallas, with Richard Arnstein (lead: Renga in Blue, CorporationWiki)", "url": "https://bluerenga.blog/2016/09/08/haunted-house-1979/"},
+  "chessprogramming": {"url": "https://chessprogramming.org/Robert_Arnstein"},
+  "invasion_force": {"note": "Invasion Force (26-1906) by Robert Arnstein, 1979", "url": "https://www.trs-80.org/invasion-force.html"}
+ }
+}

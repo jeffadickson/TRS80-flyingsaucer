@@ -11,7 +11,11 @@ fn main() {
     let path = std::env::args().nth(1).expect("cmd file");
     let cmd = std::fs::read(&path).unwrap();
     let mut base = System::new();
-    base.m.load_cmd(&cmd);
+    let entry = base.m.load_cmd(&cmd);
+    // Flying Saucers: the file's own stub moves the game into place; run it to START (42EAh).
+    base.cpu.pc = entry; base.cpu.sp = 0x41E0;
+    let mut n = 0; while base.cpu.pc != 0x42EA && n < 1_000_000 { base.step(); n += 1; }
+    assert!(base.cpu.pc == 0x42EA, "the loader did not reach 42EAh");
     let stdin = std::io::stdin(); let stdout = std::io::stdout(); let mut out = stdout.lock();
     for line in stdin.lock().lines() {
         let line = line.unwrap(); if line.trim().is_empty() { continue; }
