@@ -1,7 +1,7 @@
 /* player.js -- the chapter's "Run this moment" player: Flying Saucers on the
  * series' JavaScript TRS-80 (trs80.js) with the study's substitute ROM
- * (saucsys.js). Open mode: flysauc5.cmd is published next to the page and
- * fetched on the first Run (checked by SHA-256). If it cannot be fetched, the
+ * (saucsys.js). Open mode: flysauc5.cmd is published with the page, as
+ * base64 in flysauc5.js, and checked by SHA-256 on the first Run. If it cannot be fetched, the
  * reader can load their own copy. Each moment replays its recorded input from
  * power-on to the moment's field and stops on the moment's breakpoint. MOMENTS and FONT are injected
  * by tools/web.py. */
@@ -176,9 +176,8 @@
 
   async function fetchProgram() {
     try {
-      const r = await fetch('flysauc5.cmd');
-      if (!r.ok) return false;
-      const b = new Uint8Array(await r.arrayBuffer());
+      if (!window.FLYSAUC5_B64) return false;
+      const b = Uint8Array.from(atob(window.FLYSAUC5_B64), c => c.charCodeAt(0));
       if (await sha256(b) !== SHA) return false;
       program = b; return true;
     } catch (e) { return false; }

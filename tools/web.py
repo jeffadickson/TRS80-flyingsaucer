@@ -143,6 +143,8 @@ open(os.path.join(OUT, 'index.html'), 'w').write(page)
 for f in os.listdir(FIG): shutil.copy(os.path.join(FIG, f), os.path.join(OUT, 'fig', f))
 for f in ('trs80.js', 'saucsys.js'): shutil.copy(os.path.join(ROOT, 'emulator', 'js', f), os.path.join(OUT, f))
 shutil.copy(os.path.join(ROOT, 'web', 'src', 'player.js'), os.path.join(OUT, 'player.js'))
-shutil.copy(os.path.join(ROOT, 'original', 'flysauc5.cmd'), os.path.join(OUT, 'flysauc5.cmd'))
+import base64
+open(os.path.join(OUT, 'flysauc5.js'), 'w').write('/* flysauc5.cmd (SHA-256 0f27a03a...44d38), Flying Saucers (c) 1979 Robert Arnstein,\n * licensed to Tandy Corporation. Included for study; see RIGHTS.md. */\nwindow.FLYSAUC5_B64 = "%s";\n'
+    % base64.b64encode(open(os.path.join(ROOT, 'original', 'flysauc5.cmd'), 'rb').read()).decode())
 tot = sum(os.path.getsize(os.path.join(dp, f)) for dp, _, fs in os.walk(OUT) for f in fs)
 print('web: %s  %d bytes in %d files' % (OUT, tot, sum(len(fs) for _, _, fs in os.walk(OUT))))

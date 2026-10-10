@@ -1,9 +1,9 @@
 /* player.js -- the chapter's "Run this moment" player: Flying Saucers on the
  * series' JavaScript TRS-80 (trs80.js) with the study's substitute ROM
- * (saucsys.js). Overlay mode: the page ships no program bytes. The reader
- * loads their own flysauc5.cmd once (checked by SHA-256, kept in this browser);
- * each moment then replays its recorded input from power-on to the moment's
- * field and stops on the moment's breakpoint. MOMENTS and FONT are injected
+ * (saucsys.js). Open mode: flysauc5.cmd is published with the page, as
+ * base64 in flysauc5.js, and checked by SHA-256 on the first Run. If it cannot be fetched, the
+ * reader can load their own copy. Each moment replays its recorded input from
+ * power-on to the moment's field and stops on the moment's breakpoint. MOMENTS and FONT are injected
  * by tools/web.py. */
 (function () {
   'use strict';
@@ -174,9 +174,18 @@
     e.preventDefault(); if (!e.repeat) { tap(k); if (!running) go(); }
   });
 
-  function open(id, btn) {
+  async function fetchProgram() {
+    try {
+      if (!window.FLYSAUC5_B64) return false;
+      const b = Uint8Array.from(atob(window.FLYSAUC5_B64), c => c.charCodeAt(0));
+      if (await sha256(b) !== SHA) return false;
+      program = b; return true;
+    } catch (e) { return false; }
+  }
+  async function open(id, btn) {
     opener = btn; col = colours();
     panel.hidden = false; document.body.classList.add('emu-open');
+    if (!program) { setStatus('Loading Flying Saucers…'); await fetchProgram(); }
     start(id);
     (program ? canvas : fileIn).focus();
   }
@@ -187,9 +196,6 @@
   panel.addEventListener('keydown', e => { if (e.key === 'Escape' && document.activeElement !== canvas) close(); });
 
   program = fromStore();
-  document.querySelectorAll('[data-moment]').forEach(b => {
-    if (!program) b.textContent = 'Load your copy of Flying Saucers to run this moment';
-    b.addEventListener('click', () => open(b.dataset.moment, b));
-  });
+  document.querySelectorAll('[data-moment]').forEach(b => b.addEventListener('click', () => open(b.dataset.moment, b)));
   window.addEventListener('storage', () => { program = program || fromStore(); });
 })();
