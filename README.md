@@ -6,7 +6,7 @@ The game keeps its world on the screen: collisions are read back from video RAM,
 and a shot has no direction of its own; it moves the way the cannon points at
 that instant, which is how you steer it in flight.
 
-Repository: https://github.com/jeffadickson/TRS-80-flyingsaucer
+Repository: https://github.com/jeffadickson/TRS80-flyingsaucer
 
 ## Layout
 

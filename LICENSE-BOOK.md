@@ -19,4 +19,4 @@ The figures and animations are captured from Flying Saucers running in this
 repository's emulator. The program's own graphics and text remain the
 property of their copyright holders; see `RIGHTS.md`.
 
-Repository: https://github.com/jeffadickson/TRS-80-flyingsaucer
+Repository: https://github.com/jeffadickson/TRS80-flyingsaucer
