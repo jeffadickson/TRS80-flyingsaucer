@@ -2,10 +2,12 @@ MIT License
 
 Copyright (c) 2026 Jeff Dickson
 
-This license covers the software in this repository: the tools in tools/,
-the emulators in emulator/, the tests in tests/, the Makefile and the web
-edition's page code. It does not cover the book, the annotations or the
-moments (see LICENSE-BOOK.md), nor Flying Saucers itself (see RIGHTS.md).
+This license covers the software in this repository: the tools in tools/
+(except tools/annot.py), the emulators in emulator/, the tests in tests/, the
+Makefile and the web edition's page code. It does not cover the book, the
+annotations (tools/annot.py and the comment text of src/flysaucers.asm) or
+book/moments (see LICENSE-BOOK.md), nor Flying Saucers itself, in original/
+and as the instructions of src/flysaucers.asm (see RIGHTS.md).
 
 Parts of emulator/ and tools/ come from the author's earlier studies in the
 Assembly Demystified series (Frogger, Galaxy Invasion Plus), under this same

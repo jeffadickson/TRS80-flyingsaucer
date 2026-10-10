@@ -17,7 +17,7 @@ Basis: the decision of the project's author, recorded here as he gave it. No
 public-domain release or permission from Robert Arnstein or Tandy has been
 found; if one turns up, record it here (link, date, who made it). If the
 decision is reversed, the project returns to overlay mode: the annotations
-and `tools/listing.py` already rebuild the full listing from a reader's own
+(`tools/annot.py`) and `tools/listing.py` already rebuild the full listing from a reader's own
 file, and the web player already accepts one.
 
 In open mode the repository includes the five /CMD files in `original/`, the
@@ -48,7 +48,7 @@ code of their own (`emulator/rust/src/trs80.rs`, `emulator/js/saucsys.js`).
 
 ## This repository
 
-Tools, emulators and build code: MIT (`LICENSE`). Book text, annotations and
-original art: all rights reserved (`LICENSE-BOOK.md`). The program keeps its own
+Tools, emulators and build code: MIT (`LICENSE`). Book text, annotations
+(`tools/annot.py`) and original art: all rights reserved (`LICENSE-BOOK.md`). The program keeps its own
 status, above; no licence is granted to it. The excerpts in the book are quoted
 for commentary.

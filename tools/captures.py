@@ -1,10 +1,10 @@
-"""Render every moment (moments/*.json) and the chapter's still figures.
+"""Render every moment (book/moments/*.json) and the chapter's still figures.
 
 For each moment:
   build/run/mom_ID.txt     its full input script (prefix + script), the source of truth
   book/fig/ID.webm, .mp4   the clip, real timing (60 fields a second), muted
   book/fig/ID.png          poster: the field after the moment
-  moments/ID.json          gains "expect": pc, frame_hash, ram_hash at the breakpoint
+  book/moments/ID.json          gains "expect": pc, frame_hash, ram_hash at the breakpoint
                            (tests/test_moments.js checks the JS machine against it)
 Stills: book/fig/steer_path.png, book/fig/saucers.png.
 Deterministic: same file, same scripts, same bytes (the hashes are recorded).
@@ -16,7 +16,7 @@ from render import render
 from PIL import Image, ImageDraw
 
 FS = os.path.join(EMU, 'fsrun')
-MOM = os.path.join(ROOT, 'moments')
+MOM = os.path.join(ROOT, 'book', 'moments')
 SCR = os.path.join(ROOT, 'tests', 'scripts')
 LABELS = {v: int(k, 16) for k, v in json.load(open(os.path.join(BUILD, 'listing.json')))['labels'].items()}
 CW, CH = 12, 36          # one character cell after render(): 6 dots x 2, 12 lines x 3

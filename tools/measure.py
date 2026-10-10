@@ -9,7 +9,6 @@ an estimate: see the Tools chapter).
 """
 import os, sys, json, subprocess, statistics as st
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'annotations'))
 from paths import ROOT, RUN, EMU, ORIGINAL, BOOK
 from image import load
 import regs as RG

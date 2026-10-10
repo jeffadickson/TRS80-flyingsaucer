@@ -1,4 +1,6 @@
-build/
+build/*
+!build/README.md
 emulator/rust/target/
 work/
 web/out/
+__pycache__/

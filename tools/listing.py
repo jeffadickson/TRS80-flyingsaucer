@@ -1,4 +1,4 @@
-"""Build the commented listing of Flying Saucers from the reader's file + annotations.
+"""Build the commented listing of Flying Saucers from the program file + tools/annot.py.
 
   python3 tools/listing.py [path/to/flysauc5.cmd]
 
@@ -21,7 +21,6 @@ Header lines derived here, not typed:
 import os, sys, json, bisect, glob
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(HERE, '..', 'annotations'))
 from paths import ORIGINAL, BUILD, RUN, GAME_LO
 from z80dis import decode, h8, h16
 from image import load

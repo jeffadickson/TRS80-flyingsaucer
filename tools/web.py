@@ -1,7 +1,7 @@
 """Build the chapter's web edition: web/out/index.html plus its files.
 
 Numbers come from book/figures.json, code excerpts from build/listing.json (the
-listing generated from the reader's file), moments from moments/*.json, clips
+listing generated from the reader's file), moments from book/moments/*.json, clips
 and stills from book/fig. Nothing is retyped. Open mode (RIGHTS.md): the
 program file is published next to the page for the moment player.
 """
@@ -14,9 +14,9 @@ F = json.load(open(os.path.join(BOOK, 'figures.json')))
 L = json.load(open(os.path.join(BUILD, 'listing.json')))
 LINES = L['lines']
 MOM = {}
-for n in sorted(os.listdir(os.path.join(ROOT, 'moments'))):
+for n in sorted(os.listdir(os.path.join(ROOT, 'book', 'moments'))):
     if n.endswith('.json'):
-        m = json.load(open(os.path.join(ROOT, 'moments', n))); MOM[m['id']] = m
+        m = json.load(open(os.path.join(ROOT, 'book', 'moments', n))); MOM[m['id']] = m
 
 
 def fig(path):

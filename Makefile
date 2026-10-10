@@ -2,14 +2,14 @@
 # Open mode (RIGHTS.md): src/flysaucers.asm is the source of truth and rebuilds
 # original/flysauc5.cmd byte for byte (SHA-256 0f27a03a...44d38).
 #
-#   make listing    your file + annotations/ -> build/flysaucers.asm (commented, full)
+#   make listing    program file + tools/annot.py -> build/flysaucers.asm (commented, full)
 #   make verify     assemble that listing and check it rebuilds your file byte for byte,
 #                   then the shift test (assembled 100h higher, same screens)
 #   make exercise   ZEXDOC and ZEXALL on the Rust Z80 core (fetches the .com files)
 #   make scenarios  run every emulator scenario (profiles, dumps)
 #   make equiv      the browser machine (JS) against the Rust one, every field, zero tolerance
 #   make measure    book/figures.json
-#   make captures   moment clips and stills in book/fig, expectations in moments/
+#   make captures   moment clips and stills in book/fig, expectations in book/moments/
 #   make faster     P1/P2 patched builds, checked pass for pass against the original (book/opt.json)
 #   make web        the web edition in web/out (all pages)
 #   make test       everything above that runs offline

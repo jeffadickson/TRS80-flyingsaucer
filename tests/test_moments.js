@@ -1,4 +1,4 @@
-// test_moments.js -- every moment (moments/*.json) replayed on the web edition's
+// test_moments.js -- every moment (book/moments/*.json) replayed on the web edition's
 // machine: its input script up to the moment's field, then on to the breakpoint.
 // PC, screen hash and RAM hash must equal what the Rust emulator recorded
 // (tools/captures.py writes "expect").
@@ -15,8 +15,8 @@ function fnv(bytes) {
 }
 const cmd = new Uint8Array(fs.readFileSync(process.argv[2]));
 let bad = 0;
-for (const f of fs.readdirSync(path.join(ROOT, 'moments')).filter(f => f.endsWith('.json')).sort()) {
-  const m = JSON.parse(fs.readFileSync(path.join(ROOT, 'moments', f), 'utf8'));
+for (const f of fs.readdirSync(path.join(ROOT, 'book', 'moments')).filter(f => f.endsWith('.json')).sort()) {
+  const m = JSON.parse(fs.readFileSync(path.join(ROOT, 'book', 'moments', f), 'utf8'));
   const ev = [];
   for (const line of fs.readFileSync(path.join(ROOT, m.input_script), 'utf8').split('\n')) {
     const t = line.trim().split(/\s+/);
