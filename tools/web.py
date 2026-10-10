@@ -2,9 +2,8 @@
 
 Numbers come from book/figures.json, code excerpts from build/listing.json (the
 listing generated from the reader's file), moments from moments/*.json, clips
-and stills from book/fig. Nothing is retyped. Overlay mode: no program bytes
-go into the page (the excerpts are quoted for commentary; the player asks the
-reader for their own file).
+and stills from book/fig. Nothing is retyped. Open mode (RIGHTS.md): the
+program file is published next to the page for the moment player.
 """
 import os, sys, json, re, shutil, subprocess, html, datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -144,5 +143,6 @@ open(os.path.join(OUT, 'index.html'), 'w').write(page)
 for f in os.listdir(FIG): shutil.copy(os.path.join(FIG, f), os.path.join(OUT, 'fig', f))
 for f in ('trs80.js', 'saucsys.js'): shutil.copy(os.path.join(ROOT, 'emulator', 'js', f), os.path.join(OUT, f))
 shutil.copy(os.path.join(ROOT, 'web', 'src', 'player.js'), os.path.join(OUT, 'player.js'))
+shutil.copy(os.path.join(ROOT, 'original', 'flysauc5.cmd'), os.path.join(OUT, 'flysauc5.cmd'))
 tot = sum(os.path.getsize(os.path.join(dp, f)) for dp, _, fs in os.walk(OUT) for f in fs)
 print('web: %s  %d bytes in %d files' % (OUT, tot, sum(len(fs) for _, _, fs in os.walk(OUT))))

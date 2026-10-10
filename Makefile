@@ -1,7 +1,6 @@
 # Flying Saucers (Robert Arnstein, Radio Shack 26-1905, 1979), taken apart.
-# Overlay mode: this repository holds no program bytes. Put your own copy of
-# flysauc5.cmd at original/flysauc5.cmd (or pass BIN=path); everything is
-# checked against its SHA-256 (0f27a03a...44d38).
+# Open mode (RIGHTS.md): src/flysaucers.asm is the source of truth and rebuilds
+# original/flysauc5.cmd byte for byte (SHA-256 0f27a03a...44d38).
 #
 #   make listing    your file + annotations/ -> build/flysaucers.asm (commented, full)
 #   make verify     assemble that listing and check it rebuilds your file byte for byte,
@@ -38,7 +37,8 @@ listing: $(FSRUN)
 	$(PYTHON) tools/listing.py $(BIN)
 
 verify: listing
-	$(PASMO) --bin build/flysaucers.asm build/flysaucers.bin
+	cmp src/flysaucers.asm build/flysaucers.asm || (echo 'src/flysaucers.asm differs from the generated listing: run make listing and copy it' && exit 1)
+	$(PASMO) --bin src/flysaucers.asm build/flysaucers.bin
 	$(PYTHON) tools/mkcmd.py build/flysaucers.bin build/FLYSAUC5.CMD
 	$(PYTHON) tools/verify.py build/FLYSAUC5.CMD $(BIN)
 	$(PYTHON) tests/test_shift.py

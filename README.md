@@ -6,15 +6,15 @@ The thesis, in one line: the game keeps its world on the screen. Collisions are
 read back from video RAM, and a shot has no direction of its own; it moves the
 way the cannon points at that instant, which is how you steer it in flight.
 
-**Overlay mode.** This repository holds no program bytes (see `RIGHTS.md`).
-Bring your own `flysauc5.cmd` (SHA-256 `0f27a03a…44d38`, from Ira Goldklang's
-TRS-80 archive) and put it at `original/flysauc5.cmd`.
+**Open mode** (see `RIGHTS.md`): `original/` holds the five /CMD copies from
+Ira Goldklang's TRS-80 archive; `flysauc5.cmd` (SHA-256 `0f27a03a…44d38`) is the
+one studied, and `src/flysaucers.asm` rebuilds it byte for byte.
 
 ## Build
 
 ```
-make listing    # your file + annotations -> build/flysaucers.asm, fully commented
-make verify     # that listing reassembles to your file byte for byte; shift test
+make verify     # src/flysaucers.asm reassembles to original/flysauc5.cmd byte for byte; shift test
+make listing    # regenerate the listing from the file + annotations (must equal src/)
 make test       # + scenarios, JS/Rust equivalence, figures, captures, moments
 make exercise   # ZEXDOC and ZEXALL on the Z80 core
 ```

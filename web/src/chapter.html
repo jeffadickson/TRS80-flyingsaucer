@@ -195,7 +195,7 @@ footer { max-width: var(--measure); margin: 3rem auto 0; padding-top: 1.2rem; bo
 </main>
 
 <footer>
-  <p>Built {{built}} from commit {{commit}}. Figures from <code>book/figures.json</code>; excerpts quoted for commentary from the listing generated from the reader's own copy of flysauc5.cmd. Flying Saucers © 1979 Robert Arnstein, licensed to Tandy Corporation; no licence to it is granted here. Text © 2026 Jeff Dickson, all rights reserved.</p>
+  <p>Built {{built}} from commit {{commit}}. Figures from <code>book/figures.json</code>; excerpts from <code>src/flysaucers.asm</code>, which rebuilds flysauc5.cmd byte for byte. Flying Saucers © 1979 Robert Arnstein, licensed to Tandy Corporation; the program file is included for study (see RIGHTS.md in the repository); no licence to it is granted here. Text © 2026 Jeff Dickson, all rights reserved.</p>
   <p>I made this chapter with the help of Claude, an AI model from Anthropic, working under my direction. Every number comes from the emulator, every listing rebuilds the original byte for byte, and every claim about the code can be checked in the listing. Where I'm inferring, I say so. The screen font in the captures is a reconstruction of the Model I's character generator.</p>
 </footer>
 
@@ -203,8 +203,8 @@ footer { max-width: var(--measure); margin: 3rem auto 0; padding-top: 1.2rem; bo
   <div class="box">
     <div class="top"><h2 id="emu-title">Moment</h2><button type="button" class="pz" id="emu-close">Close</button></div>
     <div id="emu-load" hidden>
-      <label for="emu-file">Load your copy of Flying Saucers (flysauc5.cmd)</label>
-      <p>This book does not include the program. Choose your own copy of <code>flysauc5.cmd</code> (from Ira Goldklang's TRS-80 archive); it is checked by its SHA-256 and kept in this browser only, so you load it once.</p>
+      <label for="emu-file">Load flysauc5.cmd</label>
+      <p>The program file published with this page could not be loaded. Choose a copy of <code>flysauc5.cmd</code> (from Ira Goldklang's TRS-80 archive); it is checked by its SHA-256 and kept in this browser only.</p>
       <input type="file" id="emu-file" accept=".cmd,.CMD">
       <p id="emu-load-msg" role="status"></p>
     </div>

@@ -11,18 +11,18 @@ reads: program (c) 1979 Robert Arnstein, licensed to Tandy Corporation; manual
 | Owner | Robert Arnstein (author), licensed to Tandy Corporation |
 | Public-domain release | none found |
 | Permission | none on record |
-| **Mode** | **overlay**: no program bytes in this repository or its web edition |
+| **Mode** | **open**, on Jeff Dickson's decision of 2026-10-10 ("Switch to open for now") |
 
-In overlay mode the repository ships the annotations (`annotations/annot.py`:
-labels, comments, routine headers, the code/data map, keyed by address).
-`make listing BIN=your/flysauc5.cmd` checks your file against the recorded
-SHA-256, disassembles it and merges the annotations into the full commented
-listing. The book quotes only the routines it discusses. Its moments show
-captures; the Run buttons ask for your copy of the file and replay each
-moment's input. No save state is published.
+Basis: the decision of the project's author, recorded here as he gave it. No
+public-domain release or permission from Robert Arnstein or Tandy has been
+found; if one turns up, record it here (link, date, who made it). If the
+decision is reversed, the project returns to overlay mode: the annotations
+and `tools/listing.py` already rebuild the full listing from a reader's own
+file, and the web player already accepts one.
 
-If a public-domain release or permission is found, record it here (link,
-date, who made it) and the project can move to open mode.
+In open mode the repository includes the five /CMD files in `original/`, the
+commented listing in `src/` is the source of truth, and the web edition ships
+flysauc5.cmd so its Run buttons work without a file from the reader.
 
 ## The copy studied
 
