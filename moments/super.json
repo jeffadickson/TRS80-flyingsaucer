@@ -1,0 +1,32 @@
+{
+ "id": "super",
+ "title": "The super saucer",
+ "script": "robot9_1.txt",
+ "prefix": "120 tap 9",
+ "frame": 4572,
+ "breakpoint": "SUPER_HIT",
+ "clip": [
+  4560,
+  4600
+ ],
+ "crop": [
+  0,
+  0,
+  64,
+  16
+ ],
+ "caption": "Same game: the shot hits the super saucer. Three rounds of filling the playfield with 84h, then '+', then blanks; then every saucer on the screen is scored. Real time.",
+ "breakpoint_addr": "49D2",
+ "expect": {
+  "pc": "49D2",
+  "t": 135217782,
+  "frame_hash": "EA9404C0E1A4AE08",
+  "ram_hash": "4446AE316DA5BBBD"
+ },
+ "input_script": "build/run/mom_super.txt",
+ "clip_bytes": {
+  "webm": 46156,
+  "mp4": 30706,
+  "png": 3902
+ }
+}

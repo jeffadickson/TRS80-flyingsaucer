@@ -1,0 +1,19 @@
+name: build
+on: { push: { branches: [main] }, pull_request: {} }
+jobs:
+  all:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: sudo apt-get update && sudo apt-get install -y pasmo ffmpeg && pip install --break-system-packages Pillow==12.3.0
+      # Overlay mode: the program is not in the repository. CI fetches the
+      # maintainer's copy from an encrypted secret and checks its SHA-256.
+      - name: program file
+        env: { FLYSAUC5_B64: '${{ secrets.FLYSAUC5_B64 }}' }
+        run: |
+          mkdir -p original
+          echo "$FLYSAUC5_B64" | base64 -d > original/flysauc5.cmd
+          echo "0f27a03a19960b9407a059e031d289234feaecbeb33f1341c080db749e044d38  original/flysauc5.cmd" | sha256sum -c
+      - run: make all

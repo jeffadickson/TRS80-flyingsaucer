@@ -1,0 +1,3 @@
+# One shot straight up into the title bar, with a score of 0100 planted (see miss in scenarios.py).
+120 tap 9
+130 tap Z

@@ -1,0 +1,2 @@
+# Difficulty 1 (hard), the robot plays a whole game.
+120 tap 1

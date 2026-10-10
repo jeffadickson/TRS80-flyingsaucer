@@ -1,0 +1,32 @@
+{
+ "id": "chain",
+ "title": "A hit, and a fragment that hits again",
+ "script": "robot9_1.txt",
+ "prefix": "120 tap 9",
+ "frame": 3258,
+ "breakpoint": "TARGET_HIT",
+ "clip": [
+  3246,
+  3280
+ ],
+ "crop": [
+  0,
+  1,
+  64,
+  13
+ ],
+ "caption": "Difficulty 9, played by the capture robot. The shot hits the lower saucer and the game holds still for the explosion; when the pause ends, fragments start in random directions, and in the same shot step one of them finds the saucer above. Real time.",
+ "breakpoint_addr": "48E6",
+ "expect": {
+  "pc": "48E6",
+  "t": 96386247,
+  "frame_hash": "AC3C9554D0528AF5",
+  "ram_hash": "2F9697981EAFCF0B"
+ },
+ "input_script": "build/run/mom_chain.txt",
+ "clip_bytes": {
+  "webm": 5656,
+  "mp4": 7400,
+  "png": 2371
+ }
+}

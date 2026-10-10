@@ -1,0 +1,2 @@
+# Difficulty 9 (easy), the robot plays a whole game.
+120 tap 9

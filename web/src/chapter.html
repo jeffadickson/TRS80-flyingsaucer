@@ -1,0 +1,234 @@
+<title>Flying Saucers: The Screen Is the World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~66ch) on catalogue-grey paper; figures, the
+   screen captures and code step out to a wider measure; the moment player is
+   a panel over the page. The CRT itself stays dark in both themes. */
+:root {
+  --paper: #eceef1; --ink: #1a1e26; --muted: #556071; --rule: #c4cad3;
+  --accent: #1d55a3; --accent-ink: #ffffff; --box: #e0e4ea; --box-edge: #b8c1cd;
+  --code-bg: #e3e7ed; --code-ink: #1d2430; --code-addr: #6a7586; --code-cm: #3c6a3a; --code-lb: #1d55a3;
+  --bezel: #b9bcc1; --bezel-edge: #8f949b; --crt-bg: #06080c; --crt-fg: #e4ecff;
+  --hl: #f0b43c;
+  --f-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --measure: 66ch; --wide: 62rem;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #12151a; --ink: #e2e6ec; --muted: #9aa4b2; --rule: #2b323d;
+  --accent: #86b4f2; --accent-ink: #0d1420; --box: #1a1f27; --box-edge: #313a47;
+  --code-bg: #0c0f14; --code-ink: #d6dde8; --code-addr: #6f7b8c; --code-cm: #8fc28a; --code-lb: #86b4f2;
+  --bezel: #3a3e45; --bezel-edge: #23262b; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #12151a; --ink: #e2e6ec; --muted: #9aa4b2; --rule: #2b323d;
+  --accent: #86b4f2; --accent-ink: #0d1420; --box: #1a1f27; --box-edge: #313a47;
+  --code-bg: #0c0f14; --code-ink: #d6dde8; --code-addr: #6f7b8c; --code-cm: #8fc28a; --code-lb: #86b4f2;
+  --bezel: #3a3e45; --bezel-edge: #23262b; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font: 1.125rem/1.6 var(--f-body); padding-inline: 16px; padding-block: 0 4rem }
+body.emu-open { overflow: hidden }
+main { max-width: var(--measure); margin-inline: auto; display: grid; gap: 1.1rem }
+main > .wide, main > figure { width: min(var(--wide), calc(100vw - 32px)); margin-inline: calc((min(var(--wide), calc(100vw - 32px)) - 100%) / -2) }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; margin: 0 }
+h2 { font-size: 1.7rem; font-weight: 800; margin-top: 2.2rem; letter-spacing: -0.01em }
+h2 .sub { display: block; font: 600 0.78rem/1.4 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .45rem }
+p { margin: 0 }
+a { color: var(--accent) }
+code, .lbl { font-family: var(--f-mono); font-size: .86em }
+.lbl { font-weight: 600; letter-spacing: .02em }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
+
+/* masthead */
+.mast { max-width: var(--wide); margin: 0 auto; padding-block: 2.2rem 1.4rem; display: grid; gap: .9rem; border-bottom: 1px solid var(--rule) }
+.series { font: 600 .8rem/1.3 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
+.series b { color: var(--accent); font-weight: 600 }
+.mast h1 { font-size: clamp(2.4rem, 7vw, 4.6rem); font-weight: 800; letter-spacing: -0.03em; max-width: 14ch }
+.mast .dek { font-size: 1.3rem; max-width: 46ch; color: var(--muted) }
+.routes { display: flex; flex-wrap: wrap; gap: .5rem; font: 600 .74rem/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase }
+.routes span { border: 1px solid var(--box-edge); padding: .4rem .55rem; color: var(--muted) }
+.routes span b { color: var(--ink) }
+
+/* the screen */
+.crt { background: var(--bezel); border: 1px solid var(--bezel-edge); padding: clamp(8px, 2.2vw, 22px); border-radius: 6px }
+.crt video, .crt img, .crt canvas { display: block; width: 100%; height: auto; background: var(--crt-bg); border-radius: 3px; image-rendering: pixelated }
+figure { margin: 0; display: grid; gap: .6rem }
+figcaption { font-size: .95rem; line-height: 1.5; color: var(--muted); max-width: var(--measure) }
+figcaption .mt { font-family: var(--f-display); font-weight: 600; color: var(--ink); margin-right: .25rem }
+.mrow { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem }
+button { font: 600 .82rem/1 var(--f-mono); letter-spacing: .02em; cursor: pointer; border-radius: 3px; padding: .62rem .8rem }
+.run { background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent) }
+.pz { background: transparent; color: var(--ink); border: 1px solid var(--box-edge) }
+.mloc { font: .78rem/1.3 var(--f-mono); color: var(--muted) }
+
+/* explainer boxes and sidebars */
+.ex { background: var(--box); border-left: 3px solid var(--accent); padding: .9rem 1.1rem; display: grid; gap: .45rem; font-size: 1rem }
+.ex h3 { font: 600 .78rem/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent) }
+.side { border: 1px solid var(--box-edge); padding: 1rem 1.1rem; display: grid; gap: .6rem; font-size: 1rem }
+.side h3 { font-size: 1.15rem; font-weight: 600 }
+
+/* code */
+figure.code pre { margin: 0; background: var(--code-bg); color: var(--code-ink); padding: .9rem 1rem; overflow-x: auto; font: .82rem/1.55 var(--f-mono); border-radius: 3px }
+.ad { color: var(--code-addr) } .by { color: var(--code-addr) } .cm { color: var(--code-cm) } .lb { color: var(--code-lb); font-weight: 600 }
+
+/* tables */
+.tw { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; font-variant-numeric: tabular-nums }
+th, td { text-align: right; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); white-space: nowrap }
+th:first-child, td:first-child { text-align: left }
+thead th { font: 600 .72rem/1.3 var(--f-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); vertical-align: bottom; white-space: normal }
+caption { caption-side: bottom; text-align: left; font-size: .9rem; color: var(--muted); padding-top: .5rem }
+
+.onscreen { font-size: 1.22rem }
+footer { max-width: var(--measure); margin: 3rem auto 0; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-size: .9rem; color: var(--muted); display: grid; gap: .6rem }
+
+/* moment player */
+#emu { position: fixed; inset: 0; z-index: 10; background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(3px); overflow-y: auto; padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px) }
+#emu .box { max-width: 52rem; margin: 0 auto; background: var(--paper); border: 1px solid var(--box-edge); padding: 1rem; display: grid; gap: .8rem; border-radius: 6px }
+#emu .top { display: flex; justify-content: space-between; align-items: center; gap: 1rem }
+#emu h2 { margin: 0; font-size: 1.3rem }
+#emu-status { font: .82rem/1.4 var(--f-mono); color: var(--muted); min-height: 2.8em }
+#emu-load { border: 2px dashed var(--box-edge); padding: 1.2rem; display: grid; gap: .7rem }
+#emu-load label { font-weight: 600 }
+#emu-load input { font: .9rem var(--f-mono); max-width: 100% }
+.pad { display: flex; flex-wrap: wrap; gap: .5rem }
+.pad button { background: var(--box); color: var(--ink); border: 1px solid var(--box-edge); min-width: 3rem }
+#emu-crt:focus-visible { outline: 3px solid var(--hl) }
+@media (max-width: 34rem) { body { font-size: 1.05rem } h2 { font-size: 1.45rem } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important } }
+</style>
+
+<header class="mast">
+  <p class="series"><b>Assembly Demystified</b> · How the classic games really worked · Flying Saucers (Radio Shack, 1979)</p>
+  <h1>The Screen Is the World</h1>
+  <p class="dek">How Flying Saucers moves, steers and collides: three things done with one trick, reading the screen back.</p>
+  <p class="routes" aria-label="Reading routes that include this chapter"><span><b>Player</b> · On screen, Overview, Why the screen</span><span><b>Period programmer</b> · all</span><span><b>Modern programmer</b> · Overview, sections 4-6</span></p>
+</header>
+
+<main>
+<p class="onscreen"><span class="lbl">On screen.</span> You fire straight up, then tap the comma key twice. The shot turns with the cannon: two cells left for every row it climbs. Tap the full stop and it swings back. The manual says it plainly: the aiming keys "can also change the direction of the missile AFTER the missile has left the cannon." Here is one shot, steered twice, at difficulty 9.</p>
+
+{{clip:steer}}
+
+<p>Every figure in this chapter was measured on the emulator built for this study (a TRS-80 Model I at 1.77408&nbsp;MHz, validated as described in this study's repository), and every listing excerpt rebuilds, with the rest of the program, the original file byte for byte. Where I am inferring rather than measuring, I say so.</p>
+
+<h2 id="overview">Overview<span class="sub">The idea without the code</span></h2>
+<p>Flying Saucers keeps a short list of saucers and a short list of shots, each with a screen position. What it never does is compare two positions to decide whether two things have met. When a shot is about to move, the program looks at the character already on the screen where the shot is going. If that cell is blank, the shot moves. If anything at all is there, the shot has hit it, and only then does the program look through its list to find out which saucer that was.</p>
+<p>Saucers work the same way. A saucer about to move looks at the next cell. A blank, or a shot, is fine; anything else, and the saucer blows up. That is why a fast small saucer that catches a slow big one explodes, for no points, and why the fragments thrown off by a hit can take out a second saucer.</p>
+<p>And a shot has no direction of its own. Each time it moves, it moves the way the cannon points at that moment. Turning the cannon turns every shot in the air. The steering the box advertises is not an extra feature; it is what you get when a shot is a character on a screen that asks the cannon which way to go.</p>
+
+<aside class="ex" aria-label="Explainer: video RAM">
+  <h3>Video RAM</h3>
+  <p>The Model I's screen is 1,024 bytes of memory at <code>3C00h</code>-<code>3FFFh</code>: 16 rows of 64 characters, row 0 first. Writing a byte there puts a character on the screen at once; reading it back tells you what is showing. Codes <code>80h</code>-<code>BFh</code> are graphics: each cell is a 2 × 3 block of rectangles, bit 0 the top-left one through bit 5 the bottom-right. Every picture in this game is made of those, in strings of ordinary bytes.</p>
+</aside>
+
+<h2 id="clocks">1 · One pass, three clocks<span class="sub">MAIN_LOOP and UPDATE</span></h2>
+<p>The program never turns interrupts on, and a 4K Model I without the Expansion Interface has no clock to read. Its unit of time is one pass of the main loop: read a key, move the world (<code>UPDATE</code>), print the counts, wait in <code>DELAY</code>, print the time. <code>DELAY</code> is 320 turns of a two-instruction loop, {{fig:delay_t}} T-states every time. At difficulty 5 a typical pass in play takes {{fig:d5.pass_ms_median|.2f}}&nbsp;ms, and {{fig:d5.delay_share_pct|.1f}}% of it is that deliberate wait.</p>
+<p>Inside <code>UPDATE</code> three countdowns run on passes. When the saucer timer runs out the saucers step; when the shot timer runs out the shots step; a third steps a shot being loaded up the barrel. The difficulty key sets them all: a small saucer moves one cell every <i>PACE</i> = 2<i>d</i>+4 passes, a big or super saucer every second time, a shot one cell every 2(<i>d</i>+1) passes, and a unit of <span class="lbl">TIME</span> lasts <i>PACE</i>+204 passes. Difficulty 1 is "hard" because everything, your shots included, gets faster.</p>
+<div class="tw wide"><table>
+  <caption>Measured on the emulator during play, by the difficulty key pressed to start. Cells per second are character cells. A TIME unit is one tick of the TIME counter, which starts at 90.</caption>
+  <thead><tr><th scope="col">Key</th><th scope="col">PACE (passes)</th><th scope="col">Saucer step</th><th scope="col">Small saucer, cells/s</th><th scope="col">Big saucer, cells/s</th><th scope="col">Shot, cells/s</th><th scope="col">One TIME unit</th></tr></thead>
+  <tbody>{{speed_rows}}</tbody>
+</table></div>
+<p>Two things about time surprised me. The TIME counter is not seconds: its unit runs from {{fig:d9.time_unit_s|.2f}}&nbsp;s to {{fig:d1.time_unit_s|.2f}}&nbsp;s, so the 90 on the screen at the start lasts well over 90 seconds. And passes are longer at difficulty 1 ({{fig:d1.pass_ms_median|.1f}}&nbsp;ms against {{fig:d5.pass_ms_median|.1f}}&nbsp;ms), presumably because more of them include a step of the saucers or shots (I have not broken the time down to show it), so the hard game's TIME runs slowest of all.</p>
+
+<aside class="ex" aria-label="Explainer: T-state">
+  <h3>T-state</h3>
+  <p>One tick of the Z80's clock. On the Model I there are 1,774,080 of them a second, so 1&nbsp;ms is about 1,774 T-states. Every instruction takes a fixed number: <code>LD A,(DE)</code> takes 7, a <code>JP</code> 10, a <code>CALL</code> 17.</p>
+</aside>
+
+<h2 id="string">2 · A saucer is a string<span class="sub">DRAW_SAUCER</span></h2>
+<p>A saucer is two rows of six characters: a dome over a row of lights. The program draws it with the same routines that print text, because to the program it is text. Each picture starts and ends with a blank, and that blank is the whole of the erasing: draw the saucer one cell to the right and its blank left end wipes the cell it just left. No routine anywhere un-draws a saucer that is moving.</p>
+<figure>
+  <div class="crt"><img src="fig/saucers.png" width="576" height="324" alt="The three saucers, small, big and super, each drawn twice to show both rows of lights, and the three explosion pictures: a burst around a solid block, three rows of asterisks, and a box around the word POW."></div>
+  <figcaption><span class="mt">The pictures, drawn from the program's own tables.</span> Top to bottom: small, big and super saucers, with lights A (left) and B (right); the lights change with each step, so a moving saucer seems to spin. At right, the three explosion tables in full; the game shows at most two rows of each.</figcaption>
+</figure>
+<p>We find the dome by type: seven bytes a picture, so the routine multiplies one less than the type by seven, with shifts and adds, then prints. The row of lights below comes from one of two tables, picked by a phase bit that flips as saucers move.</p>
+{{code:459D:45B1:DRAW_SAUCER, first half: the dome. HL arrives pointing at SAUCER_TOP; DE is the dome's left end.}}
+{{clip:saucer}}
+
+<h2 id="look">3 · Look before you move<span class="sub">SAUCER_LOOK_R</span></h2>
+<p>Before a saucer steps, the program reads a cell ahead of it. Three characters are allowed: a blank, a <code>0</code> and a <code>!</code> (the two faces of a shot, which we meet next). Anything else, and the saucer's type becomes 5, the first of its three explosion pictures. Nothing is scored. The saucer did not hit anything the player fired; it simply found the screen occupied.</p>
+{{code:472A:4746:The look-ahead for a saucer moving right. DE is its left end + 7. The leftward test at 4783h is the same, on a different cell.}}
+<p>Which cell is read depends on the direction, and I think by accident. A saucer moving left reads the cell its own left blank is about to cover. A saucer moving right reads the cell one beyond the blank at its new right end. So a rightward saucer explodes while there is still one blank cell between it and what is in front of it; a leftward one can close up until the blanks touch. The crash below is the rightward case: at field 322 the small saucer's picture and the big one's sit side by side, blank against blank, and the small one never moves again.</p>
+<p>The common case, a blank cell, costs four instructions: <code>LD A,(DE)</code>, <code>DEC DE</code>, <code>CP 20h</code> and a taken <code>JP Z</code>, 30 T-states by the instruction tables [hand count]. A table of positions would have to be searched for every saucer against every other. Here the screen already is that table, indexed by position, and one read answers the question.</p>
+<p>The price shows on screen. Small saucers move twice as often as big ones, and both start on the same four rows, so a small one can catch a big one in front of it ({{fig:explosions.saucer_crashes}} saucers blew up this way in the measured game at difficulty 5):</p>
+{{clip:crash}}
+
+<h2 id="steer">4 · The shot that asks the cannon<span class="sub">STEP_IT and STEP</span></h2>
+<p>A shot's record is three bytes: a state and its cell. There is no direction in it. When the shot timer runs out, <code>MOVE_SHOTS</code> takes each shot in turn and, if it is due to move, adds an entry of the table <code>STEP</code> to its cell. Which entry? <code>AIM</code>: the cannon's direction, 1 to 5, as it is right now.</p>
+{{code:4847:485C:STEP_IT: the next cell is the current cell plus STEP[AIM]. AIM is read fresh every time.}}
+<p>The first five entries of <code>STEP</code> are −66, −65, −64, −63 and −62. One row up is −64, so those are: up and two cells left, up and one left, straight up, up and one right, up and two right. They are the cannon's five positions, and a shot follows whichever the cannon shows. Press <code>,</code> while the shot is in the air and the next move uses −65; press it again and the moves after that use −66.</p>
+<figure class="wide">
+  <div class="crt"><img src="fig/steer_path.png" width="768" height="576" alt="The playfield with the path of the steered shot drawn over it: up two rows from the cannon, then diagonally up and to the left, straight up for a row, and diagonally up and to the right, ending at the top row. The cannon at the bottom now points to the far right."></div>
+  <figcaption><span class="mt">Every cell the shot occupied</span>, from the moment above, drawn over the field where it reached the top. The cannon ends pointing hard right.</figcaption>
+</figure>
+<aside class="side" aria-label="Sidebar: the steered shot, move by move">
+  <h3>Hand trace: the steered shot, move by move</h3>
+  <p>From the capture of the moment above ({{trace_n}} cells). The step is what STEP_IT added; AIM is the step's column change plus 3. Rows and columns count from 0 at the top left.</p>
+  <div class="tw"><table><thead><tr><th scope="col">Field</th><th scope="col">Row, column</th><th scope="col">Step</th><th scope="col">AIM</th></tr></thead><tbody>{{trace_rows}}</tbody></table></div>
+  <p>The shot moves on every other shot step, and is drawn as <code>0</code> after each move and as <code>!</code> on the step between, which is the flicker you see as it climbs. The cannon cannot turn while a shot is still being loaded up the barrel: <code>DO_KEY</code> ignores <code>,</code> and <code>.</code> until the loading count reaches 0.</p>
+</aside>
+<p>Fragments use the same code. A fragment's record keeps a direction of its own, 1 to 12, in the high four bits of its state, and the program lends it the cannon's job for one move: it saves <code>AIM</code>, writes the fragment's direction into it, and runs the same <code>STEP_IT</code>. Directions 6 to 10 are the same five slopes going down, 11 and 12 are one cell right and left. After each record <code>AIM</code> gets its real value back.</p>
+{{code:4811:4818:A fragment borrows AIM: its direction, from the high nibble, becomes AIM for this one move.}}
+
+<aside class="ex" aria-label="Explainer: the keys">
+  <h3>The aiming keys</h3>
+  <p>The program compares the key with <code>2Ch</code> and <code>2Eh</code>, the codes the ROM returns for <code>,</code> and <code>.</code> unshifted. The title screen says to use <code>&lt;</code> and <code>&gt;</code>, which are those keys with SHIFT (<code>3Ch</code> and <code>3Eh</code>), and the manual says the arrow keys (<code>08h</code> and <code>09h</code>). Both of those reach the "any other key fires" branch, and on the emulator (whose stand-in for the ROM's keyboard routine returns the Level II codes) each of them fires a shot.</p>
+</aside>
+
+<h2 id="hit">5 · What did I hit?<span class="sub">LOOK_AHEAD and FIND_TARGET</span></h2>
+<p>After <code>STEP_IT</code>, the shot reads its next cell, as a saucer does. A blank and it moves. Anything else is a hit, and only now does the program ask which saucer that was, by walking the saucer table and comparing the hit cell with each saucer's left end: same row, and the cell at the left end or up to five cells to its right. It scores the saucer, then draws the explosion at the saucer's left end (or at the hit cell, if no saucer matched), with pauses, while the rest of the game waits: {{fig:d5.boom_ms|.1f}}&nbsp;ms every time.</p>
+{{code:48CE:48E6:FIND_TARGET's test. BC is the saucer's left end, DE the cell the shot hit.}}
+<p>A small saucer scores 20, a big one 10. A shot (not a fragment) then throws fragments: each of the twelve directions gets one with a chance of 4 in 16. A fragment lives five moves and does what a shot does, so it can find another saucer:</p>
+{{clip:chain}}
+<p>The left end that <code>FIND_TARGET</code> compares with is in a saucer's lower row, the lights. A hit in the dome row matches no saucer at all. The explosion is drawn, fragments fly, nothing is scored, and the saucer is drawn whole again on its next step. This happens more than you might think. I believe the usual way is this (an inference from the code, not a measurement): a saucer moves over a shot that is waiting in its lights row, and the shot's next move lands in the dome. In the game my capture robot played at difficulty 5 there were {{fig:explosions.total}} shot or fragment hits; {{fig:explosions.saucer_found}} found a saucer, and {{fig:explosions.dome_row}} of the {{fig:explosions.none_found}} that did not were in a dome row on a saucer's picture.</p>
+<p>The super saucer is the one hit with its own rule. It flashes the playfield three times and then scores every saucer on the screen, itself included (as a big one).</p>
+{{clip:super}}
+
+<h2 id="why">6 · Why the screen<span class="sub">What it saved, what it cost</span></h2>
+<p>Flying Saucers fits in {{fig:game_bytes}} bytes on a 4K machine, its stack in the {{fig:stack_bytes}} bytes below <code>4FF9h</code>; the static pass over every path finds the game's own code never needs more than {{fig:stack_max_static}} of them (not counting the ROM's keyboard routine). In that space, the screen is the one large data structure the program gets for free. It already holds every saucer, shot and fragment at its position, and reading one byte of it answers "is anything there?" for any cell. Using it means the collision code is a few comparisons, the steering is one table lookup, and a saucer never needs erasing.</p>
+<p>What it costs is precision. The program knows little about what is in a cell, and nothing about whose, so saucers crash into each other, a shot that reaches a dome first scores nothing, and anything non-blank in its path, a wall or another shot, is a target. Those are the game's character as much as its limits, and on a 1979 cassette for a 4K machine, a fair trade. Nor is the time spent here: more than half of a typical pass at difficulty 5 is the deliberate wait in <code>DELAY</code>.</p>
+</main>
+
+<footer>
+  <p>Built {{built}} from commit {{commit}}. Figures from <code>book/figures.json</code>; excerpts quoted for commentary from the listing generated from the reader's own copy of flysauc5.cmd. Flying Saucers © 1979 Robert Arnstein, licensed to Tandy Corporation; no licence to it is granted here. Text © 2026 Jeff Dickson, all rights reserved.</p>
+  <p>I made this chapter with the help of Claude, an AI model from Anthropic, working under my direction. Every number comes from the emulator, every listing rebuilds the original byte for byte, and every claim about the code can be checked in the listing. Where I'm inferring, I say so. The screen font in the captures is a reconstruction of the Model I's character generator.</p>
+</footer>
+
+<div id="emu" hidden role="dialog" aria-modal="true" aria-labelledby="emu-title">
+  <div class="box">
+    <div class="top"><h2 id="emu-title">Moment</h2><button type="button" class="pz" id="emu-close">Close</button></div>
+    <div id="emu-load" hidden>
+      <label for="emu-file">Load your copy of Flying Saucers (flysauc5.cmd)</label>
+      <p>This book does not include the program. Choose your own copy of <code>flysauc5.cmd</code> (from Ira Goldklang's TRS-80 archive); it is checked by its SHA-256 and kept in this browser only, so you load it once.</p>
+      <input type="file" id="emu-file" accept=".cmd,.CMD">
+      <p id="emu-load-msg" role="status"></p>
+    </div>
+    <div id="emu-screen" hidden>
+      <div class="crt"><canvas id="emu-crt" tabindex="0" aria-label="The TRS-80 screen. Click or tab here to play with the keyboard; Escape gives the keyboard back."></canvas></div>
+      <p id="emu-status" role="status"></p>
+      <div class="mrow"><button type="button" class="run" id="emu-run">Run</button><button type="button" class="pz" id="emu-step">Next field</button><button type="button" class="pz" id="emu-again">Back to the moment</button></div>
+      <div class="pad" aria-label="Keys"><button type="button" data-tap=",">, aim left</button><button type="button" data-tap=".">. aim right</button><button type="button" data-tap="Z">Z fire</button><button type="button" data-tap="1">1</button><button type="button" data-tap="5">5</button><button type="button" data-tap="9">9</button><button type="button" data-tap="R">R restart</button></div>
+    </div>
+  </div>
+</div>
+
+<script>window.MOMENTS = {{moments_json}}; window.FONT = {{font_json}};</script>
+<script>
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('figure.moment').forEach(f => {
+    const v = f.querySelector('video'), b = f.querySelector('[data-pause]');
+    const set = playing => { b.textContent = playing ? 'Pause clip' : 'Play clip'; b.setAttribute('aria-pressed', String(!playing)); };
+    if (reduce) set(false); else { v.autoplay = true; v.play().then(() => set(true)).catch(() => set(false)); }
+    b.addEventListener('click', () => { if (v.paused) { v.play(); set(true); } else { v.pause(); set(false); } });
+  });
+})();
+</script>
+<script src="trs80.js"></script>
+<script src="saucsys.js"></script>
+<script src="player.js"></script>

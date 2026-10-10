@@ -1,0 +1,2 @@
+# The demonstration left alone: it plays to GAME OVER and starts itself again.
+120 tap D

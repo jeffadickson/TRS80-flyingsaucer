@@ -1,0 +1,31 @@
+{
+ "id": "steer",
+ "title": "A shot bent in flight",
+ "script": "steer.txt",
+ "frame": 160,
+ "breakpoint": "STEP_IT",
+ "clip": [
+  126,
+  214
+ ],
+ "crop": [
+  0,
+  0,
+  64,
+  16
+ ],
+ "caption": "Difficulty 9. One shot fired straight up; two presses of , then four of . while it climbs. The shot has no direction of its own: each move, STEP_IT adds STEP[AIM] to its cell, so it follows the cannon. Real time, 60 fields a second.",
+ "breakpoint_addr": "4847",
+ "expect": {
+  "pc": "4847",
+  "t": 4923165,
+  "frame_hash": "0072CE2BB968D23B",
+  "ram_hash": "3DD4AFA4489B7831"
+ },
+ "input_script": "build/run/mom_steer.txt",
+ "clip_bytes": {
+  "webm": 10197,
+  "mp4": 10360,
+  "png": 3616
+ }
+}

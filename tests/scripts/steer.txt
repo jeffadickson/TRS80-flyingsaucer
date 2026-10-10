@@ -1,0 +1,9 @@
+# Difficulty 9, one shot fired straight up, then steered: two turns left, four right.
+120 tap 9
+126 tap Z
+152 tap ,
+158 tap ,
+182 tap .
+188 tap .
+194 tap .
+200 tap .

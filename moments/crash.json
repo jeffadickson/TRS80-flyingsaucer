@@ -1,0 +1,31 @@
+{
+ "id": "crash",
+ "title": "A small saucer catches a big one",
+ "script": "watch9.txt",
+ "frame": 328,
+ "breakpoint": "SAUCER_LOOK_R",
+ "clip": [
+  300,
+  350
+ ],
+ "crop": [
+  0,
+  5,
+  32,
+  9
+ ],
+ "caption": "Same game. The small saucer behind moves twice as often. Moving right, it looks one cell beyond its own right blank, finds part of the big saucer there, and blows up, for no points; the big one flies on. Real time.",
+ "breakpoint_addr": "472A",
+ "expect": {
+  "pc": "472A",
+  "t": 9738212,
+  "frame_hash": "D127970636622C4F",
+  "ram_hash": "9760472AA5E800FF"
+ },
+ "input_script": "build/run/mom_crash.txt",
+ "clip_bytes": {
+  "webm": 2750,
+  "mp4": 4472,
+  "png": 643
+ }
+}

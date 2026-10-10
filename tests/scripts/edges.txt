@@ -1,0 +1,19 @@
+# Aim to both stops and past them, fire at each, change difficulty in play, restart with R.
+120 tap 2
+140 tap .
+150 tap .
+160 tap .
+170 tap .
+180 tap Z
+230 tap ,
+240 tap ,
+250 tap ,
+260 tap ,
+270 tap ,
+280 tap ,
+290 tap SPACE
+330 tap 9
+400 tap LEFT
+420 tap RIGHT
+460 tap R
+520 tap 1

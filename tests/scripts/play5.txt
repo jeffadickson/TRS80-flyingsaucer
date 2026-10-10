@@ -1,0 +1,4 @@
+# Difficulty 5, the robot plays a whole game (with EXTRA TIME if it reaches 400), then ENTER restarts.
+120 tap 5
+8400 tap ENTER
+8460 tap 1

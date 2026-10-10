@@ -1,0 +1,5 @@
+build/
+original/*.cmd
+original/*.txt
+emulator/rust/target/
+work/

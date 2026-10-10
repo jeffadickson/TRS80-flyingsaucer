@@ -1,0 +1,8 @@
+# What the screen says: '<' and '>' (SHIFT , and SHIFT .). Do they aim, or fire?
+120 tap 5
+200 down SHIFT
+205 tap .
+260 up SHIFT
+300 down SHIFT
+305 tap ,
+360 up SHIFT

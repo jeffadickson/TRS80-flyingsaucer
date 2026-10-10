@@ -1,0 +1,5 @@
+# D starts the demonstration; 3 changes difficulty during the demo; R returns to the game.
+120 tap D
+1500 tap 3
+2600 tap R
+2700 tap 9

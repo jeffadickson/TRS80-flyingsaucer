@@ -1,0 +1,31 @@
+{
+ "id": "saucer",
+ "title": "A big saucer crossing",
+ "script": "watch9.txt",
+ "frame": 243,
+ "breakpoint": "SAUCER_STEP_R",
+ "clip": [
+  214,
+  300
+ ],
+ "crop": [
+  0,
+  5,
+  24,
+  9
+ ],
+ "caption": "Difficulty 9, the first saucer of the game: one cell every other saucer step (13 fields here), its row of lights changing with each move. Real time.",
+ "breakpoint_addr": "4747",
+ "expect": {
+  "pc": "4747",
+  "t": 7242856,
+  "frame_hash": "3DE992BF64E3452D",
+  "ram_hash": "F4A7A6354B25CF7B"
+ },
+ "input_script": "build/run/mom_saucer.txt",
+ "clip_bytes": {
+  "webm": 2963,
+  "mp4": 4448,
+  "png": 568
+ }
+}
